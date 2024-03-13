@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main.c Parsing/parsing.c Raycasting/raycasting.c
+SRC = main.c Parsing/parsing.c Raycasting/raycasting1.c main.c tools.c
 
 CFLAGS = -Wall -Wextra -Werror
 CC = cc
