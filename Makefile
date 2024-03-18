@@ -6,13 +6,13 @@
 #    By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/08 00:44:26 by ojebbari         ###   ########.fr        #
+#    Updated: 2024/03/17 08:23:53 by ojebbari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main.c Parsing/parsing.c Raycasting/raycasting.c
+SRC = main.c  Raycasting/raycasting1.c tools.c
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS =  -fsanitize=address -g3
 CC = cc
 NAME = cub3D
 RM = rm -fr
@@ -27,12 +27,12 @@ all : $(NAME)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJ) Cub3d.h
-	$(CC) $(CFLAGS) $(OBJ) $(MLX) $(MLX_FLG) -o $@
+	$(CC)  $(OBJ) $(CFLAGS) $(MLX) $(MLX_FLG) -o $@
 
 clean :
-	$(RM) $(OBJ)
+	@$(RM) $(OBJ)
 
 fclean : clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re : fclean all

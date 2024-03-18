@@ -6,17 +6,20 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/09 20:21:31 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/18 03:40:37 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <math.h>
 #include "MLX42/include/MLX42/MLX42.h"
 
-#define TileSize = 64
+#define TileSize  64
+#define HEIGHT  800
+#define WIDTH  800
 
 typedef struct s_player
 {
@@ -30,13 +33,26 @@ typedef struct s_player
 	int RotationSpeed; // dont be afraid the (Math.PI / 180) is to convert 3 to radian 
 }			   t_player;
 
+typedef struct s_map 
+{
+	char **grid;
+	char *f;
+	char *c;
+	int Width;
+	int Height;
+}             t_map;
+
 typedef struct s_config 
 {
 	mlx_t *mlx;
 	mlx_image_t *img;
 	t_player player;
+	t_map	*map;
 }             t_config;
 
-int ft_error(int x);
-void Parsing();
-void initialize(char **m, , t_config *player);
+int		ft_error(int x);
+
+// void	Parsing();
+void	*ft_malloc(size_t size);
+int 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
+

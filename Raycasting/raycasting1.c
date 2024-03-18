@@ -6,13 +6,13 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/13 06:48:11 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/17 08:34:21 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-void initialize(t_config *config)
+void initialize(t_config *config, t_map **map)
 {
 	config->player.x = 0; //ps: search for x placement of the config in the array
 	config->player.y = 0; //ps: search for y placement of the config in the array
@@ -22,33 +22,43 @@ void initialize(t_config *config)
 	config->player.WalkDirection = 0;
 	config->player.RotationAngle = 0;
 	config->player.MovementSpeed = 3;
-	
+	config->map = (*map);
 }
 
-void setup_mlx(t_config *config)
+void setup_map(t_config *config, mlx_t *mlx, mlx_image_t *img)
 {
-	mlx_set_setting(MLX_MAXIMIZED, true);
-	config->mlx = mlx_init(256, 256, "Cub3d", true);
-	if (!config->mlx)
-		exit(EXIT_FAILURE);
-	(config->img) = mlx_new_image(config->mlx, 256, 256);
-	if (!config->img || (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
-		exit(EXIT_FAILURE);
+	int i;
+	int j;
+	int tileX;
+	int tileY;
+	int tileColor;
+
+	i = 0;
+	j = 0;
+	while (i < config->map->Height)
+	{
+		while (j < config->map->Width)
+		{
+			
+			tileX = j * TileSize;
+			tileY = i * TileSize;
+			tileColor = config->map->grid[i][j] == 1 ? 222 : 0;
+			mlx_put_pixel(img, tileX, tileY, tileColor);
+			j++;
+		}
+		i++;
+	}
 }
 
-void setup_map(t_config *map)
-{
-
-}
-
-void raycasting(char **m)
+int raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 {
 	t_config *config;
 
 	config = ft_malloc(sizeof (t_config));
-	initialize(config);
-	setup_mlx(config);
-	setup_map(config);
-	
+	initialize(config, &map);
+	setup_map(config, mlx, img);
+	// player_movement();
+	mlx_loop(mlx);
+	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
