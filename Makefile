@@ -6,11 +6,11 @@
 #    By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/17 08:23:53 by ojebbari         ###   ########.fr        #
+#    Updated: 2024/03/18 03:44:00 by ojebbari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main.c  Raycasting/raycasting1.c tools.c
+SRC = main.c Parsing/parsing.c Raycasting/raycasting1.c main.c tools.c textures/textures.c
 
 CFLAGS =  -fsanitize=address -g3
 CC = cc
