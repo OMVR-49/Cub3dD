@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/18 03:19:52 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:56:47 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,12 @@ void	test(t_map **map)
 	(*map)->grid[3][1] = 1;
 	(*map)->grid[3][2] = 1;
 	(*map)->grid[3][3] = 1;
-	(*map)->Height = 4;
-	(*map)->Width = 4;
+	(*map)->num_rows = 4;
+	(*map)->num_cols = 4;
+	(*map)->playerX = 1;
+	(*map)->playerY = 2;
+	// (*map)->img_Height = (*map)->num_rows * TileSize;
+	// (*map)->img_Width = (*map)->num_cols * TileSize;;
 }
 int main(int ac, char **av)
 {
@@ -66,13 +70,12 @@ int main(int ac, char **av)
 		if (map)
 		{
 			mlx_set_setting(0, true);
-			if (!(mlx = mlx_init(800, 800, "MLX42", true)))
+			if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 				exit(EXIT_FAILURE);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
-			if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
-				exit(EXIT_FAILURE);
-			if (raycasting(map, mlx, img))
-				return(EXIT_SUCCESS);
+			raycasting(map, mlx, img);	
+			mlx_loop(mlx); // khass had l fnct trje3 inside raycasting(..);
+			mlx_terminate(mlx);
 		}
 	}
 	else
