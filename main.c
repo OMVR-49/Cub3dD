@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/21 01:56:47 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/22 05:32:19 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,10 @@ int main(int ac, char **av)
 			if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 				exit(EXIT_FAILURE);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
-			raycasting(map, mlx, img);	
-			mlx_loop(mlx); // khass had l fnct trje3 inside raycasting(..);
-			mlx_terminate(mlx);
+			raycasting(map, mlx, img);
 		}
 	}
 	else
 		ft_error(1);
+	mlx_terminate(mlx);
 }
