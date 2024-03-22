@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/22 05:32:19 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:58:38 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int ft_error(int x)
 	if (x == 1)
 		perror("Invalid Argumentss");
 	else if (x == 2)
-		perror("");
+		perror("file should be .cub extension");
 	else if (x == 3)
-		perror("");
+		perror("file not found");
 	exit(x);
 }
 
@@ -64,19 +64,20 @@ int main(int ac, char **av)
 	mlx_image_t *img;
 
 	test(&map);
-	if (ac == 1) // 1 bach ntester bla parsing
-	{
-		// map = parsing(ac, av);
+	// if (ac == 1) // 1 bach ntester bla parsing
+	// {
+	parsing(ac, av, map);
 		if (map)
 		{
 			mlx_set_setting(0, true);
 			if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 				exit(EXIT_FAILURE);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
-			raycasting(map, mlx, img);
+			raycasting(map, mlx, img);	
+			mlx_loop(mlx); // khass had l fnct trje3 inside raycasting(..);
+			mlx_terminate(mlx);
 		}
-	}
-	else
-		ft_error(1);
-	mlx_terminate(mlx);
+	// }
+	// else
+	// 	ft_error(1);
 }
