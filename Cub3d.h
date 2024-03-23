@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/22 07:45:04 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/23 05:39:26 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 #define TileSize  32
 #define HEIGHT  500
 #define WIDTH  500
+#define FOV_ANGLE  (60 * (M_PI / 180))
+#define Wall_Width  30
+#define NUM_RAYS (WIDTH / Wall_Width)
 
 typedef struct s_player
 {
@@ -48,12 +51,19 @@ typedef struct s_map
 	// int img_Height;
 }             t_map;
 
+typedef struct s_ray {
+    double rayAngle;      // Angle of the ray
+    double endX, endY;    // Endpoint of the ray
+    // Add more properties as needed (e.g., distance, wasHitWall, wallHitX, wallHitY)
+} t_ray;
+
 typedef struct s_config 
 {
 	mlx_image_t	*img;
 	t_player	player;
 	mlx_t		*mlx;
 	t_map		*map;
+	t_ray rays[NUM_RAYS];
 }             t_config;
 
 int		ft_error(int x);
@@ -61,4 +71,4 @@ int		ft_error(int x);
 // void	Parsing();
 void	*ft_malloc(size_t size);
 void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
-int draw_line(mlx_image_t *img, int beginX, int beginY, int endX, int endY);
+int draw_line(t_config *config, double endX, double endY, uint32_t color);

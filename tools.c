@@ -6,13 +6,13 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/22 06:52:45 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/23 05:36:26 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
 
-int draw_line(mlx_image_t *img, int beginX, int beginY, int endX, int endY)
+int draw_line(t_config *config, double endX, double endY, uint32_t color)
 {
 	double deltaX;
 	double deltaY;
@@ -20,16 +20,16 @@ int draw_line(mlx_image_t *img, int beginX, int beginY, int endX, int endY)
 	double pixelY;
 	int pixels ;
 	
-	deltaX = endX - beginX;
-	deltaY = endY - beginY;
+	deltaX = endX - config->player.x;
+	deltaY = endY - config->player.y;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels; 
-	pixelX = beginX;
-	pixelY = beginY;
+	pixelX = config->player.x;
+	pixelY = config->player.y;
 	while (pixels)
 	{
-		mlx_put_pixel(img, pixelX, pixelY,  0xFF2E2EFF);
+		mlx_put_pixel(config->img, pixelX, pixelY,  color);
 		pixelX += deltaX;
 		pixelY += deltaY;
 		--pixels;
