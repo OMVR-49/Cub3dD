@@ -6,13 +6,13 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/23 05:44:16 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/23 05:50:30 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-void initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
+void initialize(t_config *config, t_map **map)
 {
 	config->player.x = 0; //ps: search for x placement of the config in the array
 	config->player.y = 0; //ps: search for y placement of the config in the array
@@ -52,7 +52,7 @@ void grid(t_config *config, int tileX , int tileY, uint32_t tileColor)
 	}
 }
 
-void setup_map(t_config *config)
+void setup_map(t_config *config, mlx_t *mlx, mlx_image_t *img)
 {
 	uint32_t tileColor;
 	int i;
@@ -79,9 +79,10 @@ void setup_map(t_config *config)
 		i += HEIGHT / config->map->num_rows; // check 
 		y++;
 	}
+	mlx_image_to_window(mlx, img, 0, 0);
 }
 
-void	setup_player(t_config *config)
+void	setup_player(t_config *config, mlx_t *mlx, mlx_image_t *img)
 {
 	mlx_put_pixel(config->img, config->player.x, config->player.y ,0xFF2E2EFF);
 }
@@ -163,22 +164,10 @@ int isWall(t_config *config, double x, double y)
 
 }
 
-void UpdatePlayerPos(t_config *config)
+void	keyPressed(void *param) // if necessery typecast the void parameter u understand
 {
-	int moveStep;
-	double new_xpos;
-	double new_ypos;
-
-	config->player.RotationAngle += config->player.TurnDirection * config->player.RotationSpeed;
-	moveStep = config->player.WalkDirection * config->player.MovementSpeed;
-	new_xpos = config->player.x + cos(config->player.RotationAngle) * moveStep;
-	new_ypos = config->player.y + sin(config->player.RotationAngle) * moveStep;
-	if (!isWall(config, new_xpos, new_ypos))
-	{
-		config->player.x = new_xpos;
-		config->player.y = new_ypos;
-	}
-}
+	mlx_key_data_t keyCode;
+	t_config *config;
 
 void	castAllRays(t_config *config)
 {
@@ -219,21 +208,15 @@ void Update(t_config *config)
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }
 
-void	Hook(void *param) // if necessery typecast the void parameter u understand
+void	player_movement(t_config *config, mlx_t *mlx, mlx_image_t *img)
 {
-	t_config *config;
+	mlx_key_data_t keys;
 
-	config = (struct s_config *)param;
-	if (KeyPressed(config))
-	{
-		mlx_delete_image(config->mlx, config->img);
-		Update(config);
-		config->player.TurnDirection = 0;
-		config->player.WalkDirection = 0;
-	}
+	setup_player(config, mlx, img);
+	mlx_loop_hook(mlx, &keyPressed, config);
 }
 
-void raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
+int raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 {
 	t_config *config;
 

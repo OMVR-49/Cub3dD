@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_help.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/23 12:33:36 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/22 16:40:35 by sacharai         ###   ########.fr       */
+/*   Created: 2024/03/22 15:56:04 by sacharai          #+#    #+#             */
+/*   Updated: 2024/03/22 15:56:25 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-void parsing(int ac, char *av, t_map *map)
+int     ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-    int fd;
-    char *line;
-    int i;
-    int j;
+        size_t                  i;
+        unsigned char   *ps1;
+        unsigned char   *ps2;
 
-    i = 0;
-    j = 0;
-    if (ac != 2)
-        ft_error(1);
-    if (ft_strncmp(av[1], ".cub", 4) != 0)
-        ft_error(2);
-    fd = open(av[1], O_RDONLY);
-    if (fd == -1)
-        ft_error(3);
-    free(line);
-    close(fd);
+        ps1 = (unsigned char *)s1;
+        ps2 = (unsigned char *)s2;
+        i = 0;
+        if (n == 0)
+                return (0);
+        while ((ps1[i] || ps2[i]) && (ps1[i] == ps2[i]) && (i < n - 1))
+                        i++;
+        return (ps1[i] - ps2[i]);
 }
