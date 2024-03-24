@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/22 16:58:38 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/22 18:13:47 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int main(int ac, char **av)
 	test(&map);
 	// if (ac == 1) // 1 bach ntester bla parsing
 	// {
-	parsing(ac, av, map);
+	parsing(ac, av);
 		if (map)
 		{
 			mlx_set_setting(0, true);
