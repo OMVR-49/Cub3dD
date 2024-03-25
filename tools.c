@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/23 05:51:30 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/24 02:42:23 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int draw_line(t_config *config, double endX, double endY, uint32_t color)
 	double pixelX;
 	double pixelY;
 	int pixels ;
-	
+
 	deltaX = endX - config->player.x;
 	deltaY = endY - config->player.y;
 	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));

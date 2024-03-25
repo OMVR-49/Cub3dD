@@ -6,27 +6,25 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/23 05:50:30 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/25 04:13:56 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-void initialize(t_config *config, t_map **map)
+void initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 {
-	config->player.x = 0; //ps: search for x placement of the config in the array
-	config->player.y = 0; //ps: search for y placement of the config in the array
-	config->player.Raduis = 3;
-	config->player.RotationSpeed = (double)(5 * (M_PI / 180));
-	config->player.TurnDirection = 0;
-	config->player.WalkDirection = 0;
-	config->player.RotationAngle = Pi/3;
-	config->player.MovementSpeed = 2;
-	config->map = (*map);
-	config->player.x = ((*map)->playerX * (HEIGHT / config->map->num_rows)) + (HEIGHT / config->map->num_rows / 2);
-	config->player.y = ((*map)->playerY * ((WIDTH / config->map->num_cols))) + (WIDTH / config->map->num_rows / 2);
+	config->map = *map;
 	config->mlx = mlx;
 	config->img = img;
+	config->player.x = (*map)->playerX * (HEIGHT / (*map)->num_rows) + (HEIGHT / (*map)->num_rows / 2);
+	config->player.y = (*map)->playerY * (WIDTH / (*map)->num_cols) + (WIDTH / (*map)->num_cols / 2);
+	config->player.TurnDirection = 0;
+	config->player.WalkDirection = 0;
+	config->player.RotationAngle = 0;
+	config->player.StrafeDirection = 0;
+	config->player.MovementSpeed = 2;
+	config->player.RotationSpeed = 2 * (M_PI / 180);
 }
 
 void grid(t_config *config, int tileX , int tileY, uint32_t tileColor)
@@ -52,37 +50,37 @@ void grid(t_config *config, int tileX , int tileY, uint32_t tileColor)
 	}
 }
 
-void setup_map(t_config *config, mlx_t *mlx, mlx_image_t *img)
+void setup_map(t_config *config)
 {
 	uint32_t tileColor;
-	int i;
-	int j;
+	int tileY;
+	int tileX;
 	int x;
 	int y;
 
-	i = 0;
+	tileY = 0;
 	y = 0;
-	while (y < 4) // check
+	while (y < 8) // check
 	{
-		j = 0;
+		tileX = 0;
 		x = 0;
-		while (x < 4) // check
+		while (x < 8) // check
 		{
-			if(config->map->grid[y][x] == 1)
-				tileColor = 0x00008BFF;
+			if(config->map->grid[y][x] == '1')
+				tileColor = 0x2E2EFFFF;
 			else
 				tileColor = 0xFFFFFFFF;
-			grid(config, i, j, tileColor);
-			j += HEIGHT / config->map->num_rows; // check
+			grid(config, tileX, tileY, tileColor);
+			tileX += HEIGHT / config->map->num_cols;;
 			x++;
 		}
-		i += HEIGHT / config->map->num_rows; // check 
+		tileY += WIDTH / config->map->num_rows;
 		y++;
-	}
-	mlx_image_to_window(mlx, img, 0, 0);
+}
+	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }
 
-void	setup_player(t_config *config, mlx_t *mlx, mlx_image_t *img)
+void	setup_player(t_config *config)
 {
 	mlx_put_pixel(config->img, config->player.x, config->player.y ,0xFF2E2EFF);
 }
@@ -96,39 +94,10 @@ void	setup_line(t_config *config)
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }
 
-void	dda(t_config *config)
-{
-// int step;
-// int dx = x2 - x1;
-// int dy = y2 - y1;
-// int Xinc;
-// int Yinc;
-// int i;
-
-// if (abs(dx) > abs(dy))
-// 		step = abs(dx);
-// else
-// 		step = abs(dy);
-// Xinc = dx/step;
-// Yinc = dy/step;
-// i = 0;
-// while (i < step)
-// {
-// 		mlx_put_pixel(config->img, x, y, color);
-// 		x = x1 + Xinc;
-// 		y = y1 + Yinc;
-// 		i++;
-// }
-}
 
 bool	KeyPressed1(t_config *config)
 {
-	if (mlx_is_key_down(config->mlx, MLX_KEY_D))
-		return (true);
-	if (mlx_is_key_down(config->mlx, MLX_KEY_A))
-		return (true);
-	if (mlx_is_key_down(config->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(config->mlx);
+	
 	return (false);
 }
 int	KeyPressed(t_config *config)
@@ -144,57 +113,223 @@ int	KeyPressed(t_config *config)
 		config->player.TurnDirection = 1 + (0 * i++);
 	if (mlx_is_key_down(config->mlx, MLX_KEY_LEFT))
 		config->player.TurnDirection = -1 + (0 * i++);
-	if (KeyPressed1(config))
-		return(true);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_D))
+		config->player.StrafeDirection = 1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_A))
+		config->player.StrafeDirection = -1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(config->mlx);
 	return(i);
 }
 int isWall(t_config *config, double x, double y)
 {
-	int gridIndexX;
-	int gridIndexY;
+	int mapGridIndexX;
+	int mapGridIndexY;
 
-	if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
-		return (true);
-	gridIndexX = floor(x / (HEIGHT / config->map->num_rows));
-	gridIndexY = floor(y / (WIDTH / config->map->num_cols));
-	if (config->map->grid[gridIndexX][gridIndexY] != 0)
-		return(true);
-	else
-		return(false);
-
+	if (x <= 0 || x >= WIDTH || y <= 0 || y >= HEIGHT)
+		return (1);
+	mapGridIndexX = floor(x / (HEIGHT / config->map->num_rows));
+	mapGridIndexY = floor(y / (WIDTH / config->map->num_cols));
+	if (mapGridIndexX < 0 || mapGridIndexX >= config->map->num_cols || mapGridIndexY < 0 || mapGridIndexY >= config->map->num_rows)
+		return (1);
+	if (config->map->grid[mapGridIndexY][mapGridIndexX] == '1')
+		return (1);
+	return (0);
 }
 
-void	keyPressed(void *param) // if necessery typecast the void parameter u understand
+void UpdatePlayerPos(t_config *config)
 {
-	mlx_key_data_t keyCode;
-	t_config *config;
+	double moveStep;
+	double newPlayerX;
+	double newPlayerY;
+	double strafeStep;
+
+	config->player.RotationAngle += config->player.TurnDirection * config->player.RotationSpeed;
+	moveStep = config->player.WalkDirection * config->player.MovementSpeed;
+	newPlayerX = config->player.x + cos(config->player.RotationAngle) * moveStep;
+	newPlayerY = config->player.y + sin(config->player.RotationAngle) * moveStep;
+	strafeStep = config->player.StrafeDirection * config->player.MovementSpeed;
+	newPlayerX += cos(config->player.RotationAngle + M_PI_2) * strafeStep;
+	newPlayerY += sin(config->player.RotationAngle + M_PI_2) * strafeStep;
+	if (!isWall(config, newPlayerX, newPlayerY))
+	{
+		config->player.x = newPlayerX;
+		config->player.y = newPlayerY;
+	}
+}
+double distanceBetweenPoints(double x1, double y1, double x2, double y2)
+{
+	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
+double normalizeAngle(double angle)
+{
+	angle = fmod(angle, 2 * M_PI);
+	if (angle < 0)
+		angle = (2 * M_PI) + angle;
+	return (angle);
+}
+void	whileForVert(t_config *config, t_ray *ray, double xintercept, double yintercept)
+{
+	while(xintercept >= 0 && xintercept <= WIDTH && yintercept >= 0 && yintercept <= HEIGHT)
+	{
+		double xToCheck = xintercept + (ray->isRayFacingLeft ? -1 : 0);
+		double yToCheck = yintercept;
+		if (ray->isRayFacingLeft)
+			xToCheck--;
+		if(isWall(config, xToCheck, yToCheck))
+		{
+			ray->foundHitVertical = true;
+			ray->wallHitXV = xintercept;
+			ray->wallHitYV = yintercept;
+			break;
+		}
+		else
+		{
+			xintercept += ray->XincV;
+			yintercept += ray->YincV;
+		}
+	}
+}
+void	castVerticalRay(t_config *config, t_ray *ray)
+{
+	double yintercept;
+	double xintercept;
+	double nextVertTouchX;
+	double nextVertTouchY;
+
+	xintercept = floor(config->player.x / (HEIGHT / config->map->num_rows)) * (HEIGHT / config->map->num_rows);
+	if (ray->isRayFacingRight)
+		xintercept += (HEIGHT / config->map->num_rows);
+	yintercept = config->player.y + (xintercept - config->player.x) * tan(ray->rayAngle);
+	ray->XincV = HEIGHT / config->map->num_rows;
+	if (ray->isRayFacingLeft)
+		ray->XincV *= -1;
+	ray->YincV = ray->XincV * tan(ray->rayAngle);
+	if(ray->isRayFacingUp && ray->YincV > 0)
+		ray->YincV *= -1;
+	if(ray->isRayFacingDown && ray->YincV < 0)
+		ray->YincV *= -1;
+	nextVertTouchX = xintercept;
+	nextVertTouchY = yintercept;
+	whileForVert(config, ray, nextVertTouchX, nextVertTouchY);
+}
+
+void	whileForHorz(t_config *config, t_ray *ray, double nextHorzTouchX, double nextHorzTouchY)
+{
+	while(nextHorzTouchX >= 0 && nextHorzTouchX <= WIDTH && nextHorzTouchY >= 0 && nextHorzTouchY <= HEIGHT)
+	{
+		double xToCheck = nextHorzTouchX;
+		double yToCheck = nextHorzTouchY + (ray->isRayFacingUp ? -1 : 0);
+		if (ray->isRayFacingUp)
+			yToCheck--;
+		if(isWall(config, xToCheck, yToCheck))
+		{
+			ray->foundHitHorizontal = true;
+			ray->wallHitXH = nextHorzTouchX;
+			ray->wallHitYH = nextHorzTouchY;
+			break;
+		}
+		else
+		{
+			nextHorzTouchX += ray->XincH;
+			nextHorzTouchY += ray->YincH;
+		}
+	}
+}
+void	castHorizontalRay(t_config *config, t_ray *ray)
+{
+	double yintercept;
+	double xintercept;
+	double nextHorzTouchX;
+	double nextHorzTouchY;
+
+	yintercept = floor(config->player.y / (HEIGHT / config->map->num_rows)) * (HEIGHT / config->map->num_rows);
+	if (ray->isRayFacingDown)
+		yintercept += (HEIGHT / config->map->num_rows);
+	xintercept = config->player.x + (yintercept - config->player.y) / tan(ray->rayAngle);
+	ray->YincH = HEIGHT / config->map->num_rows;
+	if (ray->isRayFacingUp)
+		ray->YincH *= -1;
+	ray->XincH = ray->YincH / tan(ray->rayAngle);
+	if(ray->isRayFacingLeft && ray->XincH > 0)
+		ray->XincH *= -1;
+	if(ray->isRayFacingRight && ray->XincH < 0)
+		ray->XincH *= -1;
+	nextHorzTouchX = xintercept;
+	nextHorzTouchY = yintercept;
+	whileForHorz(config, ray, nextHorzTouchX, nextHorzTouchY);
+}
+
+void	findClosestWallHit(t_config *config, t_ray *ray)
+{
+	double hDistance;
+	double vDistance;
+
+	if (ray->foundHitHorizontal)
+		hDistance = distanceBetweenPoints(config->player.x, config->player.y, ray->wallHitXH, ray->wallHitYH);
+	else
+		hDistance = INT_MAX;
+	if (ray->foundHitVertical)
+		vDistance = distanceBetweenPoints(config->player.x, config->player.y, ray->wallHitXV, ray->wallHitYV);
+	else
+		vDistance = INT_MAX;
+	if (vDistance < hDistance)
+	{
+		ray->wallHitX = ray->wallHitXV;
+		ray->wallHitY = ray->wallHitYV;
+		ray->distance = vDistance;
+	}
+	else
+	{
+		ray->wallHitX = ray->wallHitXH;
+		ray->wallHitY = ray->wallHitYH;
+		ray->distance = hDistance;
+	}
+}
+void castRay(t_config *config, int stripId, double rayAngle)
+{
+	t_ray *ray;
+
+	ray = &config->rays[stripId];
+	ray->rayAngle = normalizeAngle(rayAngle);
+	ray->isRayFacingDown = (ray->rayAngle >= 0 && ray->rayAngle <= M_PI); // zedt aw toussawi ntester
+	ray->isRayFacingUp = !ray->isRayFacingDown;
+	ray->isRayFacingRight = (ray->rayAngle <= 0.5 * M_PI || ray->rayAngle >= 1.5 * M_PI); // zedt aw toussawi ntester
+	ray->isRayFacingLeft = !ray->isRayFacingRight;
+	ray->foundHitHorizontal = false;
+	ray->foundHitVertical = false;
+	ray->wallHitXH = 0;
+	ray->wallHitYH = 0;
+	ray->wallHitXV = 0;
+	ray->wallHitYV = 0;
+	ray->wallHitX = 0;
+	ray->wallHitY = 0;
+	castHorizontalRay(config, ray);
+	castVerticalRay(config, ray);
+	findClosestWallHit(config, ray);
+}
 
 void	castAllRays(t_config *config)
 {
-	int i;
+	int stripId;
 	double rayAngle;
-	double rayEndX;
-	double rayEndY;
 
-	i = 0;
+	stripId = 0;
 	rayAngle = config->player.RotationAngle - (FOV_ANGLE / 2);
-	while(i < 1) //rdha NUM_RAY rak ghir ttebe3 dakchi li kaydir pikuma bach tefhem
+	while(stripId < NUM_RAYS) //rdha NUM_RAY rak ghir ttebe3 dakchi li kaydir pikuma bach tefhem
 	{
-		rayEndX = config->player.x + cos(rayAngle) * 50;
-		rayEndY = config->player.y + sin(rayAngle) * 50;
-		config->rays[i].rayAngle = rayAngle;
-        config->rays[i].endX = rayEndX;
-        config->rays[i].endY = rayEndY;
-		draw_line(config, rayEndX, rayEndY, 0x7f11e011);
-		rayAngle += (FOV_ANGLE / NUM_RAYS);
-		i++;
+		castRay(config, stripId, rayAngle);
+		draw_line(config,config->rays[stripId].wallHitX, config->rays[stripId].wallHitY, 0xFF0000FF); // check
+		rayAngle += FOV_ANGLE / NUM_RAYS;
+		stripId++;
 	}
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }
+
 void	setup_fov(t_config *config)
 {
 	castAllRays(config);
-	
 }
 
 void Update(t_config *config)
@@ -203,20 +338,27 @@ void Update(t_config *config)
 	UpdatePlayerPos(config);
 	setup_map(config);
 	setup_player(config);
-	setup_line(config);
+	// setup_line(config);
 	setup_fov(config);
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }
 
-void	player_movement(t_config *config, mlx_t *mlx, mlx_image_t *img)
+void	Hook(void *param) // if necessery typecast the void parameter u understand
 {
-	mlx_key_data_t keys;
+	t_config *config;
 
-	setup_player(config, mlx, img);
-	mlx_loop_hook(mlx, &keyPressed, config);
+	config = (struct s_config *)param;
+	if (KeyPressed(config))
+	{
+		mlx_delete_image(config->mlx, config->img);
+		Update(config);
+		config->player.TurnDirection = 0;
+		config->player.WalkDirection = 0;
+		config->player.StrafeDirection = 0;
+	}
 }
 
-int raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
+void raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 {
 	t_config *config;
 
@@ -224,7 +366,7 @@ int raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 	initialize(config, &map , mlx, img);
 	setup_map(config);
 	setup_player(config);
-	setup_line(config);
+	// setup_line(config);
 	setup_fov(config);
 	
 	// lkhedma kamla hna t genera l merra llwla mn be3d teb9a 3ndk function we7da li 

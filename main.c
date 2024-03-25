@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/22 16:58:38 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/24 22:16:37 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,43 +17,35 @@ int ft_error(int x)
 	if (x == 1)
 		perror("Invalid Argumentss");
 	else if (x == 2)
-		perror("file should be .cub extension");
+		perror("");
 	else if (x == 3)
-		perror("file not found");
+		perror("");
 	exit(x);
 }
 
 void	test(t_map **map)
 {
 	int i = 0;
-	int j = 0;
-
 	(*map) = ft_malloc(sizeof(t_map));
-	(*map)->grid = ft_malloc(4 * sizeof(char *));
-	(*map)->grid[0] = ft_malloc(4);
-	(*map)->grid[1] = ft_malloc(4);
-	(*map)->grid[2] = ft_malloc(4);
-	(*map)->grid[3] = ft_malloc(4);
-	(*map)->grid[0][0] = 1;
-	(*map)->grid[0][1] = 1;
-	(*map)->grid[0][2] = 1;
-	(*map)->grid[0][3] = 1;
-	(*map)->grid[1][0] = 1;
-	(*map)->grid[1][1] = 0;
-	(*map)->grid[1][2] = 0;
-	(*map)->grid[1][3] = 1;
-	(*map)->grid[2][0] = 1;
-	(*map)->grid[2][1] = 0;
-	(*map)->grid[2][2] = 0;
-	(*map)->grid[2][3] = 1;
-	(*map)->grid[3][0] = 1;
-	(*map)->grid[3][1] = 1;
-	(*map)->grid[3][2] = 1;
-	(*map)->grid[3][3] = 1;
-	(*map)->num_rows = 4;
-	(*map)->num_cols = 4;
-	(*map)->playerX = 1;
-	(*map)->playerY = 2;
+	(*map)->grid = ft_malloc(8 * sizeof(char *));
+	while (i < 8)
+	{
+		(*map)->grid[i] = ft_malloc(8 * sizeof(char));
+		i++;
+	}
+	(*map)->grid[0] = "11111111";
+	(*map)->grid[1] = "10000001";
+	(*map)->grid[2] = "10010001";
+	(*map)->grid[3] = "10000101";
+	(*map)->grid[4] = "10100001";
+	(*map)->grid[5] = "10000001";
+	(*map)->grid[6] = "10000001";
+	(*map)->grid[7] = "11111111";
+	(*map)->num_cols = 8;
+	(*map)->num_rows = 8;
+	(*map)->playerX = 3;
+	(*map)->playerY = 5;
+	// (*map)->playerStart = 'N';
 	// (*map)->img_Height = (*map)->num_rows * TileSize;
 	// (*map)->img_Width = (*map)->num_cols * TileSize;;
 }
@@ -64,20 +56,19 @@ int main(int ac, char **av)
 	mlx_image_t *img;
 
 	test(&map);
-	// if (ac == 1) // 1 bach ntester bla parsing
-	// {
-	parsing(ac, av, map);
+	if (ac == 1) // 1 bach ntester bla parsing
+	{
+		// map = parsing(ac, av);
 		if (map)
 		{
 			mlx_set_setting(0, true);
 			if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 				exit(EXIT_FAILURE);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
-			raycasting(map, mlx, img);	
-			mlx_loop(mlx); // khass had l fnct trje3 inside raycasting(..);
-			mlx_terminate(mlx);
+			raycasting(map, mlx, img);
 		}
-	// }
-	// else
-	// 	ft_error(1);
+	}
+	else
+		ft_error(1);
+	mlx_terminate(mlx);
 }
