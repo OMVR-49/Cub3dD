@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/25 09:04:29 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/25 09:15:13 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <math.h>
 #include <limits.h>
 #include "MLX42/include/MLX42/MLX42.h"
+#include "get_next_line/get_next_line.h"
 
 #define Pi 3.141592653589793238
 #define TileSize  64
@@ -83,9 +84,23 @@ typedef struct s_config
 	t_ray rays[NUM_RAYS];
 }             t_config;
 
+typedef struct s_start
+{
+	char **dirs;
+	char *key;
+	char *value;
+	int i;
+	struct s_start *next;
+} 			t_start;
+
 int		ft_error(int x);
 
 // void	Parsing();
 void	*ft_malloc(size_t size);
 void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
-int draw_line(t_config *config, double endX, double endY, uint32_t color);
+int 	draw_line(t_config *config, double endX, double endY, uint32_t color);
+void	parsing(int ac, char **av);
+int     ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*get_next_line(int fd);
+char    **ft_split(char const *s, char c);
+char    *ft_substr(char const *s, unsigned int start, size_t len);

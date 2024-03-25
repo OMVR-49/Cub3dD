@@ -6,13 +6,19 @@
 #    By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/17 08:23:53 by ojebbari         ###   ########.fr        #
+#    Updated: 2024/03/25 09:15:46 by ojebbari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main.c  Raycasting/raycasting1.c tools.c
+SRC = main.c  Raycasting/raycasting1.c \
+				tools.c \
+				Parsing/parsing.c \
+				Parsing/parsing_help.c \
+				get_next_line/get_next_line.c \
+				get_next_line/get_next_line_utils.c \
+				Parsing/ft_split.c 
 
-CFLAGS =  -fsanitize=address -g3
+CFLAGS =  -fsanitize=address -g3 -g
 CC = cc
 NAME = cub3D
 RM = rm -fr

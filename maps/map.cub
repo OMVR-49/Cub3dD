@@ -3,8 +3,25 @@ SO texture/wall.xpm
 WE texture/wood.xpm
 EA texture/q.xpm
 
+
+
+
+
+
+
 F  35,32,150
-C  32,23,3
+C  32,23,3d
+
+
+
+
+
+
+
+
+
+
+
 
 1111111111111111111111111
 1000000000110000000000001
