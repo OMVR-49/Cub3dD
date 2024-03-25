@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/25 04:09:30 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/25 09:04:29 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "MLX42/include/MLX42/MLX42.h"
 
 #define Pi 3.141592653589793238
-#define TileSize  16
+#define TileSize  64
 #define HEIGHT  700
 #define WIDTH  700
 #define FOV_ANGLE  (60 * (M_PI / 180))
@@ -42,15 +42,15 @@ typedef struct s_player
 typedef struct s_map 
 {
 	char **grid;
-	char *f;
-	char *c;
-	int num_cols;
-	int num_rows;
+	int **f; // alloc 4 bytes for each color
+	int **c; // alloc 4 bytes for each color
+	unsigned char PlayerRotationStart; // 'N', 'S', 'E', 'W'
+	int num_cols; // number of columns
+	int num_rows; // number of rows
 	int playerX;
 	int playerY;
-	char playerStart;
-	// int img_Width;
-	// int img_Height;
+	double ratioX; // dyali ana omar
+	double ratioY; //dyali ana omar
 }             t_map;
 
 typedef struct s_ray {

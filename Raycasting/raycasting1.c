@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/25 04:13:56 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/25 08:50:03 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,19 @@ void initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 	config->map = *map;
 	config->mlx = mlx;
 	config->img = img;
-	config->player.x = (*map)->playerX * (HEIGHT / (*map)->num_rows) + (HEIGHT / (*map)->num_rows / 2);
-	config->player.y = (*map)->playerY * (WIDTH / (*map)->num_cols) + (WIDTH / (*map)->num_cols / 2);
+	config->map->ratioX = WIDTH / config->map->num_cols;
+	config->map->ratioY = HEIGHT / config->map->num_rows;
+	config->player.x = (*map)->playerX * (config->map->ratioY) + (config->map->ratioY / 2);
+	config->player.y = (*map)->playerY * (config->map->ratioX) + (config->map->ratioX / 2);
 	config->player.TurnDirection = 0;
 	config->player.WalkDirection = 0;
-	config->player.RotationAngle = 0;
+	config->player.RotationAngle =0;
+	if (config->map->PlayerRotationStart == 'N')
+		config->player.RotationAngle = 1.5 * M_PI;
+	else if (config->map->PlayerRotationStart == 'S')
+		config->player.RotationAngle = 0.5 * M_PI;
+	else if (config->map->PlayerRotationStart == 'W')
+		config->player.RotationAngle = M_PI;
 	config->player.StrafeDirection = 0;
 	config->player.MovementSpeed = 2;
 	config->player.RotationSpeed = 2 * (M_PI / 180);
@@ -34,12 +42,10 @@ void grid(t_config *config, int tileX , int tileY, uint32_t tileColor)
 
 	x = 0;
 	y = 0;
-	int xx = WIDTH / config->map->num_cols; //check
-	int yy = HEIGHT / config->map->num_rows; // check
-	while (x <= xx)
+	while (x <= config->map->ratioX)
 	{
 		y = 0;
-		while(y <= yy)
+		while(y <= config->map->ratioY)
 		{
 			mlx_put_pixel(config->img, y + tileX, x + tileY, tileColor);
 			if (x == 0 || y == 0 )
@@ -60,21 +66,23 @@ void setup_map(t_config *config)
 
 	tileY = 0;
 	y = 0;
-	while (y < 8) // check
+	while (y < config->map->num_rows)
 	{
 		tileX = 0;
 		x = 0;
-		while (x < 8) // check
+		while (x < config->map->num_cols)
 		{
 			if(config->map->grid[y][x] == '1')
 				tileColor = 0x2E2EFFFF;
-			else
+			else if (config->map->grid[y][x] == '0')
 				tileColor = 0xFFFFFFFF;
+			else if(config->map->grid[y][x] == ' ')
+				tileColor = 0x000000FF;
 			grid(config, tileX, tileY, tileColor);
-			tileX += HEIGHT / config->map->num_cols;;
+			tileX += config->map->ratioX;
 			x++;
 		}
-		tileY += WIDTH / config->map->num_rows;
+		tileY += config->map->ratioY;
 		y++;
 }
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
@@ -128,8 +136,8 @@ int isWall(t_config *config, double x, double y)
 
 	if (x <= 0 || x >= WIDTH || y <= 0 || y >= HEIGHT)
 		return (1);
-	mapGridIndexX = floor(x / (HEIGHT / config->map->num_rows));
-	mapGridIndexY = floor(y / (WIDTH / config->map->num_cols));
+	mapGridIndexX = floor(x / (config->map->ratioX));
+	mapGridIndexY = floor(y / (config->map->ratioY));
 	if (mapGridIndexX < 0 || mapGridIndexX >= config->map->num_cols || mapGridIndexY < 0 || mapGridIndexY >= config->map->num_rows)
 		return (1);
 	if (config->map->grid[mapGridIndexY][mapGridIndexX] == '1')
@@ -198,11 +206,11 @@ void	castVerticalRay(t_config *config, t_ray *ray)
 	double nextVertTouchX;
 	double nextVertTouchY;
 
-	xintercept = floor(config->player.x / (HEIGHT / config->map->num_rows)) * (HEIGHT / config->map->num_rows);
+	xintercept = floor(config->player.x / (config->map->ratioY)) * ( config->map->ratioY);
 	if (ray->isRayFacingRight)
-		xintercept += (HEIGHT / config->map->num_rows);
+		xintercept += (config->map->ratioY);
 	yintercept = config->player.y + (xintercept - config->player.x) * tan(ray->rayAngle);
-	ray->XincV = HEIGHT / config->map->num_rows;
+	ray->XincV = config->map->ratioY;
 	if (ray->isRayFacingLeft)
 		ray->XincV *= -1;
 	ray->YincV = ray->XincV * tan(ray->rayAngle);
@@ -244,11 +252,11 @@ void	castHorizontalRay(t_config *config, t_ray *ray)
 	double nextHorzTouchX;
 	double nextHorzTouchY;
 
-	yintercept = floor(config->player.y / (HEIGHT / config->map->num_rows)) * (HEIGHT / config->map->num_rows);
+	yintercept = floor(config->player.y / (config->map->ratioX)) * (config->map->ratioX);
 	if (ray->isRayFacingDown)
-		yintercept += (HEIGHT / config->map->num_rows);
+		yintercept += config->map->ratioX;
 	xintercept = config->player.x + (yintercept - config->player.y) / tan(ray->rayAngle);
-	ray->YincH = HEIGHT / config->map->num_rows;
+	ray->YincH = config->map->ratioX;
 	if (ray->isRayFacingUp)
 		ray->YincH *= -1;
 	ray->XincH = ray->YincH / tan(ray->rayAngle);
