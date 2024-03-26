@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:55:52 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 11:38:50 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 21:07:53 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,68 +38,68 @@ void	cast_ray(t_config *config, int stripId, double rayangle)
 	find_closest_wall_hit(config, ray);
 }
 
-void	cast_all_rays(t_config *config)
+void	setup_fov(t_config *config)
 {
-	double	rayangle;
-	int		stripid;
-
-	stripid = 0;
-	rayangle = config->player.rotation_angle - (config->player.fov_angle / 2);
-	while (stripid < NUM_RAYS)
-	{
-		cast_ray(config, stripid, rayangle);
-		draw_line(config, config->rays[stripid].wallhitx, \
-				config->rays[stripid].wallhity, 0xFF0000FF);
-		rayangle += config->player.fov_angle / NUM_RAYS;
-		stripid++;
-	}
-	mlx_image_to_window(config->mlx, config->img, 0, 0);
+	cast_all_rays(config);
 }
 
-uint32_t	set_color(t_ray ray)
+int	key_pressed(t_config *config)
 {
-	if (ray.wasvertical && ray.israyfdown)
-		return (0x00FF00FF);
-	else if (ray.wasvertical && ray.israyfup)
-		return (0xFDEE00FF);
-	else if (!ray.wasvertical && ray.israyfright)
-		return (0x0048BAFF);
-	else if (!ray.wasvertical && ray.israyfleft)
-		return (0xC1CDCDFF);
+	int	i;
+
+	i = 0;
+	if (mlx_is_key_down(config->mlx, MLX_KEY_S))
+		config->player.walk_direction = -1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_W))
+		config->player.walk_direction = 1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_RIGHT))
+		config->player.turn_direction = 1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_LEFT))
+		config->player.turn_direction = -1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_D))
+		config->player.strafe_direction = 1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_A))
+		config->player.strafe_direction = -1 + (0 * i++);
+	if (mlx_is_key_down(config->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(config->mlx);
+	return (i);
+}
+
+int	is_wall(t_config *config, double x, double y)
+{
+	int	mx;
+	int	my;
+
+	if (x <= 0 || x >= WIDTH || y <= 0 || y >= HEIGHT)
+		return (1);
+	mx = floor(x / (config->map->ratiox));
+	my = floor(y / (config->map->ratioy));
+	if (mx < 0 || mx >= config->map->num_cols || my < 0 || \
+	my >= config->map->num_rows)
+		return (1);
+	if (config->map->grid[my][mx] == '1')
+		return (1);
 	return (0);
 }
 
-void	wall3d(t_config *config, double wallstripheight, int j, t_ray ray)
+void	update_player_pos(t_config *config)
 {
-	uint32_t	color;
-	int			i;
+	double	move_step;
+	double	newplayer_x;
+	double	newplayer_y;
+	double	strafestep;
 
-	i = 0;
-	color = set_color(ray);
-	while (i < wallstripheight / 2)
-	{
-		mlx_put_pixel(config->img, j, (HEIGHT / 2) - i, color);
-		i++;
-	}
-	i = 0;
-	while (i < wallstripheight / 2)
-	{
-		mlx_put_pixel(config->img, j, (HEIGHT / 2) + i, color);
-		i++;
-	}
-}
-
-void	ceil2dfloor1d(t_config *config, int i)
-{
-	int	j;
-
-	j = 0;
-	while (j < HEIGHT)
-	{
-		if (j < HEIGHT / 2)
-			mlx_put_pixel(config->img, i, j, config->map->c);
-		if (j > HEIGHT / 2)
-			mlx_put_pixel(config->img, i, j, config->map->f);
-		j++;
-	}
+	config->player.rotation_angle += config->player.turn_direction * \
+	config->player.rotation_speed;
+	move_step = config->player.walk_direction * config->player.movement_speed;
+	newplayer_x = config->player.x + cos(config->player.rotation_angle) * \
+	move_step;
+	newplayer_y = config->player.y + sin(config->player.rotation_angle) * \
+	move_step;
+	strafestep = config->player.strafe_direction * \
+	config->player.movement_speed;
+	newplayer_x += cos(config->player.rotation_angle + M_PI_2) * strafestep;
+	newplayer_y += sin(config->player.rotation_angle + M_PI_2) * strafestep;
+	config->player.x = newplayer_x;
+	config->player.y = newplayer_y;
 }

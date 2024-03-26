@@ -6,7 +6,11 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/03/26 23:29:49 by sacharai         ###   ########.fr       */
+=======
+/*   Updated: 2024/03/26 21:03:43 by ojebbari         ###   ########.fr       */
+>>>>>>> 635877aebec839cd7cea24a66181c5a89519e57a
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +75,8 @@ int	main(int ac, char **av)
 	t_map		*map;
 	mlx_t		*mlx;
 
+	map = NULL;
+	mlx = NULL;
 	if (ac == 2)
 	{
 		map = parsing(ac, av);

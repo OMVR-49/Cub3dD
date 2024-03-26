@@ -1,21 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cub3d.h                                            :+:      :+:    :+:   */
+/*   Cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/03/26 23:07:27 by sacharai         ###   ########.fr       */
-=======
-/*   Updated: 2024/03/26 22:47:56 by ojebbari         ###   ########.fr       */
->>>>>>> 635877aebec839cd7cea24a66181c5a89519e57a
+/*   Updated: 2024/03/26 23:13:41 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -24,8 +20,8 @@
 # include <math.h>
 # include <limits.h>
 # include <fcntl.h>
-# include "MLX42/include/MLX42/MLX42.h"
-# include "get_next_line/get_next_line.h"
+# include "../MLX42/include/MLX42/MLX42.h"
+# include "get_next_line/get_next_line_bonus.h"
 
 # define PI 3.141592653589793238
 # define TILE_SIZE  32
@@ -66,8 +62,8 @@ typedef struct s_map
 	int				num_rows; // number of rows
 	int				player_x;
 	int				player_y;
-	int				ratiox; // dyali ana omar
-	int				ratioy; //dyali ana omar
+	double			ratiox; // dyali ana omar
+	double			ratioy; //dyali ana omar
 }			t_map;
 
 typedef struct s_ray
@@ -134,7 +130,7 @@ void		setup_wall(t_config *config);
 void		cast_ray(t_config *config, int stripId, double rayangle);
 void		cast_all_rays(t_config *config);
 void		wall3d(t_config *config, double wallstripheight, int j, t_ray ray);
-void		ceil2dfloor1d(t_config *config, int i);
+void		ceil2dfloor1d(t_config *config);
 void		whileforvert(t_config *config, t_ray *ray, double nvtx, \
 double nvty);
 void		cast_vertical_ray(t_config *config, t_ray *ray);
@@ -153,7 +149,7 @@ double		distance_between_points(double x1, double y1, double x2, double y2);
 double		normalize_angle(double angle);
 void		*ft_malloc(size_t size);
 
-void		ft_error(int x);
+int			ft_error(int x);
 // void	Parsing();
 void		raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
 t_map		*parsing(int ac, char **av);
@@ -163,22 +159,7 @@ char		**ft_split(char const *s, char c);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strdup(const char *s);
 char		*ft_strtrim(char *s1, char *set);
-size_t		ft_strlcpy(char *dst, const char *src, size_t size);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_atoi(const char *str);
-char		*ft_strtrim(char *s1, char *set);
-int			check_if_exist(t_start *head, char *key);
-int			list_length(t_start *head);
-void		chack_spaces(char **map);
-int			check_number(char *str);
-int			len_char(char *str, char c);
-int			help_parse_color(char *str);
-int			*parse_color(t_start *head);
-t_start		*create_node(char *key, char *value);
-void		insert_node(t_start **head, char *key, char *value, int flag);
-t_ply		*check_map_valid_char(char **map);
-int			calculate_max_size_line(char **map);
-char		**create_helpmap(char **map, int max_size_line, int num_rows);
-char		**create_newmap(char **map, int max_size_line, int num_rows);
-t_map		*valid_map(char **map);
+
 #endif
