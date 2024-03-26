@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 02:40:20 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 03:22:37 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,134 @@ void castRay(t_config *config, int stripId, double rayAngle)
 	castVerticalRay(config, ray);
 	findClosestWallHit(config, ray);
 }
+void	castVerticalRay(t_config *config, t_ray *ray)
+{
+	double yintercept;
+	double xintercept;
+	double nextVertTouchX;
+	double nextVertTouchY;
+
+	xintercept = floor(config->player.x / (config->map->ratioY)) * ( config->map->ratioY);
+	if (ray->isRayFacingRight)
+		xintercept += (config->map->ratioY);
+	yintercept = config->player.y + (xintercept - config->player.x) * tan(ray->rayAngle);
+	ray->XincV = config->map->ratioY;
+	if (ray->isRayFacingLeft)
+		ray->XincV *= -1;
+	ray->YincV = ray->XincV * tan(ray->rayAngle);
+	if(ray->isRayFacingUp && ray->YincV > 0)
+		ray->YincV *= -1;
+	if(ray->isRayFacingDown && ray->YincV < 0)
+		ray->YincV *= -1;
+	nextVertTouchX = xintercept;
+	nextVertTouchY = yintercept;
+	whileForVert(config, ray, nextVertTouchX, nextVertTouchY);
+}
+
+void	whileForHorz(t_config *config, t_ray *ray, double nextHorzTouchX, double nextHorzTouchY)
+{
+	double xToCheck;
+	double yToCheck;
+
+	while(nextHorzTouchX >= 0 && nextHorzTouchX <= WIDTH && nextHorzTouchY >= 0 && nextHorzTouchY <= HEIGHT)
+	{
+		xToCheck = nextHorzTouchX;
+		if(ray->isRayFacingUp)
+			yToCheck = nextHorzTouchY - 1;
+		else
+			yToCheck = nextHorzTouchY;
+		if (isWall(config, xToCheck, yToCheck))
+		{
+			ray->foundHitHorizontal = true;
+			ray->wallHitXH = nextHorzTouchX;
+			ray->wallHitYH = nextHorzTouchY;
+			break;
+		}
+		else
+		{
+			nextHorzTouchX += ray->XincH;
+			nextHorzTouchY += ray->YincH;
+		}
+	}
+}
+void	castHorizontalRay(t_config *config, t_ray *ray)
+{
+	double yintercept;
+	double xintercept;
+	double nextHorzTouchX;
+	double nextHorzTouchY;
+
+	yintercept = floor(config->player.y / (config->map->ratioX)) * (config->map->ratioX);
+	if (ray->isRayFacingDown)
+		yintercept += config->map->ratioX;
+	xintercept = config->player.x + (yintercept - config->player.y) / tan(ray->rayAngle);
+	ray->YincH = config->map->ratioX;
+	if (ray->isRayFacingUp)
+		ray->YincH *= -1;
+	ray->XincH = ray->YincH / tan(ray->rayAngle);
+	if(ray->isRayFacingLeft && ray->XincH > 0)
+		ray->XincH *= -1;
+	if(ray->isRayFacingRight && ray->XincH < 0)
+		ray->XincH *= -1;
+	nextHorzTouchX = xintercept;
+	nextHorzTouchY = yintercept;
+	whileForHorz(config, ray, nextHorzTouchX, nextHorzTouchY);
+}
+
+void	findClosestWallHit(t_config *config, t_ray *ray)
+{
+	double hDistance;
+	double vDistance;
+
+	if (ray->foundHitHorizontal)
+		hDistance = distanceBetweenPoints(config->player.x, config->player.y, ray->wallHitXH, ray->wallHitYH);
+	else
+		hDistance = INT_MAX;
+	if (ray->foundHitVertical)
+		vDistance = distanceBetweenPoints(config->player.x, config->player.y, ray->wallHitXV, ray->wallHitYV);
+	else
+		vDistance = INT_MAX;
+	if (vDistance < hDistance)
+	{
+		ray->wallHitX = ray->wallHitXV;
+		ray->wallHitY = ray->wallHitYV;
+		ray->distance = vDistance;
+	}
+	else
+	{
+		ray->wallHitX = ray->wallHitXH;
+		ray->wallHitY = ray->wallHitYH;
+		ray->distance = hDistance;
+	}
+}
+void castRay(t_config *config, int stripId, double rayAngle)
+{
+	t_ray *ray;
+
+	ray = &config->rays[stripId];
+	ray->rayAngle = normalizeAngle(rayAngle);
+	ray->isRayFacingDown = (ray->rayAngle > 0 && ray->rayAngle < M_PI);
+	ray->isRayFacingUp = !ray->isRayFacingDown;
+	ray->isRayFacingRight = (ray->rayAngle <  M_PI_2 || ray->rayAngle > 3 * M_PI_2); 
+	ray->isRayFacingLeft = !ray->isRayFacingRight;
+	ray->foundHitHorizontal = false;
+	ray->foundHitVertical = false;
+	ray->wallHitXH = 0;
+	ray->wallHitYH = 0;
+	ray->wallHitXV = 0;
+	ray->wallHitYV = 0;
+	ray->wallHitX = 0;
+	ray->wallHitY = 0;
+	ray->distance = 0;
+	castHorizontalRay(config, ray);
+	castVerticalRay(config, ray);
+	findClosestWallHit(config, ray);
+}
+
+void	castAllRays(t_config *config)
+{
+	int stripId;
+	double rayAngle;
 
 void	castAllRays(t_config *config)
 {

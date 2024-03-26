@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 02:36:21 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 03:20:37 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,24 @@
 #include <unistd.h>
 #include <math.h>
 #include <limits.h>
+#include <fcntl.h>
 #include "MLX42/include/MLX42/MLX42.h"
 #include<fcntl.h>
 
 #define Pi 3.141592653589793238
-#define EPSILON 0.00001
 #define TileSize  64
-#define HEIGHT  1000
-#define WIDTH  1000
+#define HEIGHT  700
+#define WIDTH  700
 #define FOV_ANGLE  (60 * (M_PI / 180))
-#define Wall_Width 1  
+#define Wall_Width 1 
 #define NUM_RAYS (WIDTH / Wall_Width)
 
+typedef struct s_ply
+{
+	int x;
+	int y;
+	char direction;
+} t_ply;
 typedef struct s_player
 {
 	double x; // x place of my player
@@ -46,8 +52,8 @@ typedef struct s_player
 typedef struct s_map 
 {
 	char **grid;
-	int **f; // alloc 4 bytes for each color
-	int **c; // alloc 4 bytes for each color
+	int f; // alloc 4 bytes for each color
+	int c; // alloc 4 bytes for each color
 	unsigned char PlayerRotationStart; // 'N', 'S', 'E', 'W'
 	int num_cols; // number of columns
 	int num_rows; // number of rows
@@ -55,8 +61,6 @@ typedef struct s_map
 	int playerY;
 	double ratioX; // dyali ana omar
 	double ratioY; //dyali ana omar
-	int wallStripWidth;
-	int wallStripHeight;
 }             t_map;
 
 typedef struct s_ray {
@@ -98,14 +102,12 @@ typedef struct s_start
 	struct s_start *next;
 } 			t_start;
 
+int		ft_error(int x);
+// void	Parsing();
 void	*ft_malloc(size_t size);
 void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
 int 	draw_line(t_config *config, double endX, double endY, uint32_t color);
 t_map	*parsing(int ac, char **av);
-
-void	*ft_malloc(size_t size);
-void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
-int 	draw_line(t_config *config, double endX, double endY, uint32_t color);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*get_next_line(int fd);
 char    **ft_split(char const *s, char c);
@@ -113,9 +115,4 @@ char    *ft_substr(char const *s, unsigned int start, size_t len);
 char    *ft_strdup(const char *s);
 char    *ft_strtrim(char *s1, char *set);
 int     ft_strcmp(const char *s1, const char *s2);
-size_t  ft_strlen(const char *s);
-int    ft_error(int error);
-char	**ft_split(char const *s, char c);
-int		ft_strchr(const char *s, int c);
-
-#endif
+int	 	ft_atoi(const char *str);
