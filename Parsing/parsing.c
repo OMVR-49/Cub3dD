@@ -6,76 +6,17 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:36 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/24 02:58:08 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:13:15 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-// char    *ft_strchr(const char *s, int c)
-// {
-//         int             i;
-//         char    *str;
-
-//         i = 0;
-//         str = (char *)s;
-//         while (str[i] && str[i] != (char)c)
-//                 i++;
-//         if (str[i] == (char)c)
-//                 return (str + i);
-//         else
-//                 return (NULL);
-// }
-char    *ft_strdup(const char *s)
-{
-        char    *str;
-        int             i;
-
-        i = 0;
-        str = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
-        if (!str)
-                return (NULL);
-        while (s[i])
-        {
-                str[i] = s[i];
-                i++;
-        }
-        str[i] = '\0';
-        return (str);
-}
-
-char    *ft_substr(char const *s, unsigned int start, size_t len)
-{
-        char                    *str;
-        unsigned int    lens;
-        size_t                  i;
-
-        i = 0;
-        if (!s)
-                return (NULL);
-        lens = ft_strlen(s);
-        if (start >= lens)
-                return (ft_strdup(""));
-        if ((lens - start) < len)
-                str = malloc(sizeof(char) * ((lens - start) + 1));
-        else
-                str = malloc(sizeof(char) * (len + 1));
-        if (!str)
-                return (NULL);
-        while (i < len && s[start])
-        {
-                str[i] = s[start];
-                i++;
-                start++;
-        }
-        str[i] = '\0';
-        return (str);
-}
 int check_if_exist(t_start *head, char *key)
 {
 	t_start *tmp;
+	char **value;
 	int i;
-
 	i = 0;
 	tmp = head;
 	while (tmp)
@@ -89,23 +30,42 @@ int check_if_exist(t_start *head, char *key)
 }
 
 
-t_start	*create_env_node(char *key, char *value)
+t_start	*create_node(char *key, char *value)
 {
 	t_start	*node;
 
 	node = malloc(sizeof(t_start));
 	node->key = key;
 	node->value = value;
+	node->flag = 0;
+	node->rgb_num = NULL;
 	node->next = NULL;
 	return (node);
 }
 
-void	insert_env_node(t_start **head, char *key, char *value)
+void	insert_node(t_start **head, char *key, char *value, int flag)
 {
 	t_start	*new_node;
 	t_start	*tmp = *head;
-
-	new_node = create_env_node(key, value);
+	int i;
+	char **table;
+	table = ft_split("NO SO WE EA F C", ' ');
+	if( flag == 0)
+	{
+		i = 0;
+		flag = 0;
+		while(table[i])
+		{
+			if(ft_strcmp(table[i], key) == 0)
+				flag++;
+			free(table[i]);
+			i++;
+		}
+		free(table);
+		if(flag == 0)
+			ft_error(19); // error 19 is invalid key
+	}
+	new_node = create_node(key, value);
 	if (!*head)
 	{
 		*head = new_node;
@@ -139,7 +99,7 @@ void check_map_valid_char(char **map)
 		while(map[i][j])
 		{
 			if(map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'N' && map[i][j] != 'S' && map[i][j] != 'W' && map[i][j] != 'E' && map[i][j] != ' ')
-				ft_error(7);
+				ft_error(7); // error 7 is invalid char in map
 			if(map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E')
 			{
 				if(isplayerfind == 1)
@@ -150,6 +110,27 @@ void check_map_valid_char(char **map)
 		}
 		i++;
 	}
+}
+
+void chack_spaces(char **map)
+{
+	int i = 0;
+	int j = 0;
+	while(map[i])
+	{
+		j = 0;
+		while(map[i][j])
+		{
+			if(map[i][j] != ' ' && map[i][j] != '1')
+			{
+				if(map[i][j + 1] == ' ' || map[i][j - 1] == ' ' || map[i + 1][j] == ' ' || map[i - 1][j] == ' ')
+					ft_error(10);
+			}
+			j++;
+		}
+		i++;
+	}
+
 }
 
 void valid_map(char **map)
@@ -164,40 +145,36 @@ void valid_map(char **map)
 	}
 	char **newmap = malloc(sizeof(char *) * (i + 3));
 	newmap[0] = malloc(sizeof(char) * (max_size_line + 3));
-	//file this line with space 
 	int j = 0;
 	while(j < max_size_line + 2)
 		newmap[0][j++] = ' ';
+	newmap[0][j] = '\0';
 	j = 1;
 	int k = 0;
-	while(j < i + 2)
+	while(j < i + 1)
 	{
-		
+		k = 0;
 		newmap[j] = malloc(sizeof(char) * (max_size_line + 3));
 		while(k < max_size_line + 2)
 		{
-			if(k == 0 || k > ft_strlen(map[j - 1]) + 1)
+			if(k == 0 || k > ft_strlen(map[j - 1]))
 				newmap[j][k] = ' ';
 			else
 				newmap[j][k] = map[j - 1][k - 1];
 			k++;
 		}
+		newmap[j][k] = '\0';
 		j++;
 	}
 	newmap[j] = malloc(sizeof(char) * (max_size_line + 3));
 	j = 0;
-	while(j < max_size_line + 2)
-		newmap[i + 2][j++] = ' ';
-	//print the new map
-	j = 0;
-	while(newmap[j])
-	{
-		printf("%s\n", newmap[j]);
-		j++;
-	}
+	while(j < max_size_line  + 2)
+		newmap[i + 1][j++] = ' ';
+	newmap[i + 1][j] = '\0';
+	newmap[i + 2] = NULL;
+	chack_spaces(newmap);
 	
 }
-
 void parsing(int ac, char **av)
 {
     int fd;
@@ -205,6 +182,7 @@ void parsing(int ac, char **av)
     char *tmp;
 	char **str;
 	int i;
+	t_map *mapp;
 	
 
 	i = 0;
@@ -226,8 +204,11 @@ void parsing(int ac, char **av)
 	t_start *head = NULL;
 	while (line)
 	{
+		tmp = line;
+		line = ft_strtrim(line, "\n");
+		free(tmp);
 		i = 0;
-		if(ft_strlen(line) != 1)
+		if(ft_strlen(line) != 0)
 		{
 			str = ft_split(line, ' ');
 			if(check_if_exist(head, str[0]) == 6)
@@ -236,24 +217,35 @@ void parsing(int ac, char **av)
 				i++;
 			if (i != 2)
 				ft_error(4);
-			insert_env_node(&head, str[0], str[1]);
+			insert_node(&head, str[0], str[1] , 0);
 		}
 		free(line);
 		line = get_next_line(fd);
+		
 	}
 	t_start *map = NULL;
 	while(ft_strlen(line) == 0)
 	{
 		free(line);
 		line = get_next_line(fd);
+		if(line == NULL)
+			ft_error(14); // error 14 is no map
 	}
+	int is_new_line = 0;
 	while(line)
 	{
-		insert_env_node(&map, ft_strdup("map"), line);
+		tmp = line;
+		line = ft_strtrim(line, "\n");
+		free(tmp);
+		if(ft_strlen(line)== 0)
+			is_new_line = 1;
+		if(is_new_line == 1 && ft_strlen(line) != 0)
+			ft_error(15); // error 15 is empty line in the middle of the map
+		insert_node(&map, ft_strdup("map"), line,1);
 		line = get_next_line(fd);
 	}
 	int Maplen = linkedListLength(map);
-	 char **maparray = malloc(sizeof(char *) * (Maplen + 1));
+	char **maparray = malloc(sizeof(char *) * (Maplen + 1));
 	i = 0;
 	t_start *tmpmap = NULL;
 	while(map)
@@ -269,5 +261,5 @@ void parsing(int ac, char **av)
 	check_map_valid_char(maparray);
 	valid_map(maparray);
     close(fd);
-	
+	 return *mapp; 
 }

@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/24 01:29:04 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:02:55 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ typedef struct s_config
 
 typedef struct s_start
 {
-	char **dirs;
+	int16_t **rgb_num;
 	char *key;
 	char *value;
-	int i;
+	int flag;
 	struct s_start *next;
 } 			t_start;
 
@@ -75,3 +75,6 @@ int     ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*get_next_line(int fd);
 char    **ft_split(char const *s, char c);
 char    *ft_substr(char const *s, unsigned int start, size_t len);
+char    *ft_strdup(const char *s);
+char    *ft_strtrim(char *s1, char *set);
+int     ft_strcmp(const char *s1, const char *s2);
