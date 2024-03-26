@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 02:40:20 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 09:37:50 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ void grid(t_config *config, int tileX , int tileY, uint32_t tileColor)
 			pixelX = tileX + x;
 			pixelY = tileY + y;
 			if (pixelX < WIDTH && pixelY < HEIGHT)
-				mlx_put_pixel(config->img, pixelX, pixelY, tileColor);
-			if(pixelX == 0 || pixelY == 0 || fabs(x - (config->map->ratioX - 1)) < 1 || fabs(y - (config->map->ratioY - 1)) < 1)
-				mlx_put_pixel(config->img, pixelX, pixelY, 0x000000FF);
+				mlx_put_pixel(config->img, pixelX * MAP_Scale, pixelY * MAP_Scale, tileColor);
 			x++;
 		}
 		y++;
@@ -94,7 +92,7 @@ void setup_map(t_config *config)
 
 void	setup_player(t_config *config)
 {
-	mlx_put_pixel(config->img, config->player.x, config->player.y ,0xFF2E2EFF);
+	mlx_put_pixel(config->img, config->player.x * MAP_Scale, config->player.y * MAP_Scale ,0xFF2E2EFF);
 }
 
 int	KeyPressed(t_config *config)
@@ -294,6 +292,7 @@ void	findClosestWallHit(t_config *config, t_ray *ray)
 		ray->wallHitX = ray->wallHitXH;
 		ray->wallHitY = ray->wallHitYH;
 		ray->distance = hDistance;
+		ray->wasvertical = true;
 	}
 }
 void castRay(t_config *config, int stripId, double rayAngle)
@@ -304,8 +303,8 @@ void castRay(t_config *config, int stripId, double rayAngle)
 	ray->rayAngle = normalizeAngle(rayAngle);
 	ray->isRayFacingDown = (ray->rayAngle > 0 && ray->rayAngle < M_PI);
 	ray->isRayFacingUp = !ray->isRayFacingDown;
-	ray->isRayFacingRight = (ray->rayAngle <  M_PI_2 || ray->rayAngle > 3 * M_PI_2); 
-	ray->isRayFacingLeft = !ray->isRayFacingRight;
+	ray->isRayFacingLeft = (ray->rayAngle >  M_PI_2 && ray->rayAngle < 3 * M_PI_2); 
+	ray->isRayFacingRight = !ray->isRayFacingLeft;
 	ray->foundHitHorizontal = false;
 	ray->foundHitVertical = false;
 	ray->wallHitXH = 0;
@@ -315,6 +314,7 @@ void castRay(t_config *config, int stripId, double rayAngle)
 	ray->wallHitX = 0;
 	ray->wallHitY = 0;
 	ray->distance = 0;
+	ray->wasvertical = false;
 	castHorizontalRay(config, ray);
 	castVerticalRay(config, ray);
 	findClosestWallHit(config, ray);
@@ -330,7 +330,7 @@ void	castAllRays(t_config *config)
 	while(stripId < NUM_RAYS) 
 	{
 		castRay(config, stripId, rayAngle);
-		draw_line(config,config->rays[stripId].wallHitX, config->rays[stripId].wallHitY, 0xFF0000FF); // check
+		draw_line(config,config->rays[stripId].wallHitX , config->rays[stripId].wallHitY, 0xFF0000FF); // check
 		rayAngle += FOV_ANGLE / NUM_RAYS;
 		stripId++;
 	}
@@ -341,14 +341,76 @@ void	setup_fov(t_config *config)
 {
 	castAllRays(config);
 }
+uint32_t	set_color(t_ray ray)
+{
+	if (ray.wasvertical &&  ray.isRayFacingDown )
+		return (0x00FF00FF);
+	else if (ray.wasvertical &&  ray.isRayFacingUp )
+		return (0xFDEE00FF);
+	else if (!ray.wasvertical && ray.isRayFacingRight)
+		return (0x0048BAFF);
+	else if (!ray.wasvertical && ray.isRayFacingLeft)
+		return (0xC1CDCDFF);
+	return 0;
+}
+void	ceil2DFloor1D(t_config *config, int i)
+{
+	int j;
 
+	j = 0;	
+	while(j < HEIGHT)
+	{
+		if (j < HEIGHT / 2)
+			mlx_put_pixel(config->img, i, j, config->map->c);
+		if (j > HEIGHT / 2)
+			mlx_put_pixel(config->img, i, j, config->map->f);
+		j++;
+	}
+	
+}
+void 	wall3D(t_config *config, double wallStripHeight, int j, t_ray ray)
+{
+	int i;
+	uint32_t color;
+
+	i = 0;
+	color = set_color(ray);
+	while (i < wallStripHeight/2)
+	{
+		mlx_put_pixel(config->img, j, (HEIGHT / 2) - i, color);
+		i++;
+	}
+	i = 0;
+	while (i < wallStripHeight / 2)
+	{
+		mlx_put_pixel(config->img, j, (HEIGHT / 2) + i, color);
+		i++;
+	}
+}
+void	setup_wall(t_config *config)
+{
+	int i;
+	double rayDistance;
+
+	i = 0;
+	while (i < NUM_RAYS)
+	{
+		rayDistance = config->rays[i].distance * cos(config->rays[i].rayAngle - config->player.RotationAngle);
+		config->rays[i].wallStripHeight = (config->map->ratioY / rayDistance) * dPP; // maybe replace width by numcos
+		if (config->rays[i].wallStripHeight > HEIGHT)
+			config->rays[i].wallStripHeight = HEIGHT;
+		ceil2DFloor1D(config, i);
+		wall3D(config, config->rays[i].wallStripHeight, i, config->rays[i]);
+		i++;
+	}
+}
 void Update(t_config *config)
 {
 	config->img = mlx_new_image(config->mlx, WIDTH, HEIGHT);
 	UpdatePlayerPos(config);
+	setup_wall(config);
 	setup_map(config);
 	setup_player(config);
-	// setup_line(config);
 	setup_fov(config);
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }
@@ -377,7 +439,7 @@ void raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 	setup_map(config);
 	setup_player(config);
 	setup_fov(config);
-	
+	setup_wall(config);
 	// lkhedma kamla hna t genera l merra llwla mn be3d teb9a 3ndk function we7da li 
 	// hia Update teb9a t3awd t genere based on l keys wl values li ghadi ytbedlo
 	mlx_loop_hook(config->mlx, &Hook, config);
