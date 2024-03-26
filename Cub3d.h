@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/25 09:15:13 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/25 09:22:17 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <limits.h>
+#include <fcntl.h>
 #include "MLX42/include/MLX42/MLX42.h"
 #include "get_next_line/get_next_line.h"
 
@@ -24,7 +25,7 @@
 #define HEIGHT  700
 #define WIDTH  700
 #define FOV_ANGLE  (60 * (M_PI / 180))
-#define Wall_Width 1  
+#define Wall_Width 1 
 #define NUM_RAYS (WIDTH / Wall_Width)
 
 typedef struct s_player
@@ -94,7 +95,6 @@ typedef struct s_start
 } 			t_start;
 
 int		ft_error(int x);
-
 // void	Parsing();
 void	*ft_malloc(size_t size);
 void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
