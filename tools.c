@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 00:57:10 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 06:05:12 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int draw_line(t_config *config, double endX, double endY, uint32_t color)
 	pixelY = config->player.y;
 	while (pixels > 0)
 	{
-		mlx_put_pixel(config->img, pixelX, pixelY,  color);
+		mlx_put_pixel(config->img, pixelX * MAP_Scale, pixelY * MAP_Scale,  color);
 		pixelX += deltaX;
 		pixelY += deltaY;
 		--pixels;

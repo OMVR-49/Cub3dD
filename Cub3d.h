@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 03:04:51 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 07:18:57 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 #include "get_next_line/get_next_line.h"
 
 #define Pi 3.141592653589793238
-#define TileSize  64
+#define TileSize  32
 #define HEIGHT  700
 #define WIDTH  700
 #define FOV_ANGLE  (60 * (M_PI / 180))
-#define Wall_Width 1 
+#define Wall_Width 1
 #define NUM_RAYS (WIDTH / Wall_Width)
+#define MAP_Scale 0.2
+#define dPP ((WIDTH / 2) / tan(FOV_ANGLE / 2))
 
 typedef struct s_ply
 {
@@ -63,23 +65,29 @@ typedef struct s_map
 
 typedef struct s_ray {
     double rayAngle;
+    double distance;
+
     double wallHitX;
     double wallHitY;
     double wallHitXH;
     double wallHitYH;
     double wallHitXV;
     double wallHitYV;
-    double distance;
-    int foundHitVertical;
-    int foundHitHorizontal;
 	double XincH;
 	double YincH;
 	double XincV;
 	double YincV;
+
+    int foundHitVertical;
+    int foundHitHorizontal;
+	bool wasvertical;
+
 	double isRayFacingDown;
 	double isRayFacingUp;
 	double isRayFacingRight;
 	double isRayFacingLeft;
+
+	double wallStripHeight;
 } t_ray;
 
 typedef struct s_config 
