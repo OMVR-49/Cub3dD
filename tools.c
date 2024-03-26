@@ -6,11 +6,36 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/22 15:55:52 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:57:10 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
+
+int draw_line(t_config *config, double endX, double endY, uint32_t color)
+{
+	double deltaX;
+	double deltaY;
+	double pixelX;
+	double pixelY;
+	double pixels ;
+
+	deltaX = endX - config->player.x;
+	deltaY = endY - config->player.y;
+	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	deltaX /= pixels;
+	deltaY /= pixels; 
+	pixelX = config->player.x;
+	pixelY = config->player.y;
+	while (pixels > 0)
+	{
+		mlx_put_pixel(config->img, pixelX, pixelY,  color);
+		pixelX += deltaX;
+		pixelY += deltaY;
+		--pixels;
+	}
+	return 1;
+}
 
 void	*ft_malloc(size_t size)
 {

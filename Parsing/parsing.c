@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:36 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 00:19:47 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 03:12:50 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,20 @@ int check_if_exist(t_start *head, char *key)
 	int i;
 	i = 0;
 	tmp = head;
+	
+	while(tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	if(i == 6)
+		return 6;
+	tmp = head;
+	i = 0;
 	while (tmp)
 	{
-		if (key== NULL || ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
-			ft_error(5);
+		if (key== NULL || ft_strcmp(tmp->key, key) == 0)
+			ft_error(5); // error 5 missing key
 		tmp = tmp->next;
 		i++;
 	}
@@ -86,12 +96,15 @@ int linkedListLength(t_start *head)
 	}
 	return count;
 }
-void check_map_valid_char(char **map)
+
+t_ply* check_map_valid_char(char **map)
 {
 	int i;
 	int j;
 	int isplayerfind = 0;
+	t_ply *player;
 
+	player = malloc(sizeof(t_ply));
 	i = 0;
 	while(map[i])
 	{
@@ -102,14 +115,20 @@ void check_map_valid_char(char **map)
 				ft_error(7); // error 7 is invalid char in map
 			if(map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E')
 			{
+				player->x = i;
+				player->y = j;
+				player->direction = map[i][j];
 				if(isplayerfind == 1)
-					ft_error(6);
+					ft_error(6); // error 6 is multiple player
 				isplayerfind = 1;
 			}
 			j++;
 		}
 		i++;
 	}
+	if(isplayerfind == 0)
+		ft_error(6); // error 9 is no player
+	return player;
 }
 
 void chack_spaces(char **map)
@@ -133,24 +152,46 @@ void chack_spaces(char **map)
 
 }
 
-void valid_map(char **map)
+t_map * valid_map(char **map)
 {
 	int max_size_line = 0;
+	t_map *mapp;
 	int i = 0;
+	int k = 0;
+	
+	mapp = ft_malloc(sizeof(t_map));
 	while(map[i])
 	{
 		if(ft_strlen(map[i]) > max_size_line)
 			max_size_line = ft_strlen(map[i]);
 		i++;
 	}
+	mapp->num_rows = i;
+	mapp->num_cols = max_size_line;
+	char **helpmap = malloc(sizeof(char *) * (i + 1));
+	int j = 0;
+	while(j < i)
+{
+    k = 0;
+    helpmap[j] = malloc(sizeof(char) * (max_size_line + 1));
+    while(k < max_size_line)
+    {
+        if(k >= ft_strlen(map[j]))
+            helpmap[j][k] = ' ';
+        else
+            helpmap[j][k] = map[j][k];
+        k++;
+    }
+    helpmap[j][k] = '\0';
+    j++;
+}
 	char **newmap = malloc(sizeof(char *) * (i + 3));
 	newmap[0] = malloc(sizeof(char) * (max_size_line + 3));
-	int j = 0;
+	j = 0;
 	while(j < max_size_line + 2)
 		newmap[0][j++] = ' ';
 	newmap[0][j] = '\0';
 	j = 1;
-	int k = 0;
 	while(j < i + 1)
 	{
 		k = 0;
@@ -173,16 +214,81 @@ void valid_map(char **map)
 	newmap[i + 1][j] = '\0';
 	newmap[i + 2] = NULL;
 	chack_spaces(newmap);
+	mapp->grid = helpmap;
+	return mapp;
+}
+int len_char(char *str,char c)
+{
+	int i;
+
+	i = 0;
+	while(str[i] && str[i] != c)
+		i++;
+	return (i);
+}
+int check_number(char *str)
+{
+	int i;
+	i = 0;
+	while(str[i])
+	{
+		if(str[i] < '0' || str[i] > '9')
+			return 0; // error 8 is invalid color
+		i++;
+	}
+	return 1;
+}
+int help_parse_color(char *str)
+{
+	int i;
+	int j;
+	int rgb;
+	char **tmprgb;
+	i = 0;
+	j = 0;
+	tmprgb = ft_split(str, ',');
+	if(len_char(tmprgb[0], ',') != 2)
+		ft_error(17); // error 8 is invalid color
+	if(check_number(tmprgb[0]) == 0 || check_number(tmprgb[1]) == 0 || check_number(tmprgb[2]) == 0)
+		ft_error(17); // error 8 is invalid color
+	if(ft_atoi(tmprgb[0]) < 0 || ft_atoi(tmprgb[0]) > 255 || ft_atoi(tmprgb[1]) < 0 || ft_atoi(tmprgb[1]) > 255 || ft_atoi(tmprgb[2]) < 0 || ft_atoi(tmprgb[2]) > 255)
+		ft_error(17); // error 8 is invalid color
+	rgb = ft_atoi(tmprgb[0]) * 65536 + ft_atoi(tmprgb[1]) * 256 + ft_atoi(tmprgb[2]);
+	while(tmprgb[j])
+	{
+		free(tmprgb[j]);
+		j++;
+	}
+	free(tmprgb);
+	return rgb;
+}
+int *parse_color(t_start *head)
+{
+	t_start *tmp;
+	char *tmprgb;
+	int *rgb;
 	
+	rgb = malloc(sizeof(int) * 2);
+	tmp = head;
+	while(tmp)
+	{
+		if (!ft_strcmp(tmp->key, "C") )
+			rgb[0] = help_parse_color(tmp->value);
+		else if (!ft_strcmp(tmp->key, "F"))
+			rgb[1] = help_parse_color(tmp->value);
+		tmp =tmp->next;
+	}
+	return rgb;
 }
 
-void parsing(int ac, char **av)
+t_map *parsing(int ac, char **av)
 {
     int fd;
     char *line;
     char *tmp;
 	char **str;
 	int i;
+	int *rgb;
 	t_map *mapp;
 	
 
@@ -222,8 +328,8 @@ void parsing(int ac, char **av)
 		}
 		free(line);
 		line = get_next_line(fd);
-		
 	}
+	rgb = parse_color(head);
 	t_start *map = NULL;
 	while(ft_strlen(line) == 0)
 	{
@@ -241,7 +347,10 @@ void parsing(int ac, char **av)
 		if(ft_strlen(line)== 0)
 			is_new_line = 1;
 		if(is_new_line == 1 && ft_strlen(line) != 0)
+		{
+			printf("line %s\n", line);
 			ft_error(15); // error 15 is empty line in the middle of the map
+		}
 		insert_node(&map, ft_strdup("map"), line,1);
 		line = get_next_line(fd);
 	}
@@ -259,8 +368,17 @@ void parsing(int ac, char **av)
 		free(tmpmap);
 	}
 	maparray[i] = NULL;
-	check_map_valid_char(maparray);
-	valid_map(maparray);
+	t_ply *help = check_map_valid_char(maparray);
+	mapp = valid_map(maparray);
+	mapp->PlayerRotationStart = help->direction;
+	mapp->playerX = help->y;
+	mapp->playerY = help->x;
+	printf("playerX %d\n", mapp->playerX);
+	printf("playerY %d\n", mapp->playerY);
+	mapp->f = rgb[1];
+	mapp->c = rgb[0];
+	free(help);
+	free(rgb);
     close(fd);
-	//  return *mapp; 
+	return mapp;
 }

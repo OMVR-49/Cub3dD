@@ -6,7 +6,7 @@
 #    By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/24 02:46:46 by sacharai         ###   ########.fr        #
+#    Updated: 2024/03/26 03:03:34 by sacharai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ SRC = main.c  Raycasting/raycasting1.c \
 				Parsing/parsing_help.c \
 				get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c \
-				Parsing/ft_split.c 
+				Parsing/ft_split.c \
+				Parsing/ft_atoi.c 
 
 CFLAGS =  -fsanitize=address -g3 -g
 CC = cc
