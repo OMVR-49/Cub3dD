@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/24 02:42:23 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:01:24 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int draw_line(t_config *config, double endX, double endY, uint32_t color)
 	double deltaY;
 	double pixelX;
 	double pixelY;
-	int pixels ;
+	double pixels ;
 
 	deltaX = endX - config->player.x;
 	deltaY = endY - config->player.y;
@@ -27,7 +27,7 @@ int draw_line(t_config *config, double endX, double endY, uint32_t color)
 	deltaY /= pixels; 
 	pixelX = config->player.x;
 	pixelY = config->player.y;
-	while (pixels)
+	while (pixels > 0)
 	{
 		mlx_put_pixel(config->img, pixelX, pixelY,  color);
 		pixelX += deltaX;

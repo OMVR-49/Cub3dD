@@ -6,9 +6,12 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 00:21:45 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 02:36:21 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef CUB3D_H
+#define CUB3D_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,23 +19,22 @@
 #include <unistd.h>
 #include <math.h>
 #include <limits.h>
-#include <fcntl.h>
 #include "MLX42/include/MLX42/MLX42.h"
-#include "get_next_line/get_next_line.h"
+#include<fcntl.h>
 
 #define Pi 3.141592653589793238
+#define EPSILON 0.00001
 #define TileSize  64
-#define HEIGHT  700
-#define WIDTH  700
+#define HEIGHT  1000
+#define WIDTH  1000
 #define FOV_ANGLE  (60 * (M_PI / 180))
-#define Wall_Width 1 
+#define Wall_Width 1  
 #define NUM_RAYS (WIDTH / Wall_Width)
 
 typedef struct s_player
 {
 	double x; // x place of my player
-	double y; // y place of my player
-	int Raduis;  // raduis size of my player , bcz the player is a small cercle
+	double y; // y place of my player 
 	double TurnDirection; // -1 if left , +1 if right , 0 nothing
 	double WalkDirection; // -1 if back , +1 if front , 0 nothing
 	double RotationAngle; // the player will start looking at the bottom verticaly 90 degre reverse clockwise
@@ -53,6 +55,8 @@ typedef struct s_map
 	int playerY;
 	double ratioX; // dyali ana omar
 	double ratioY; //dyali ana omar
+	int wallStripWidth;
+	int wallStripHeight;
 }             t_map;
 
 typedef struct s_ray {
@@ -94,12 +98,14 @@ typedef struct s_start
 	struct s_start *next;
 } 			t_start;
 
-int		ft_error(int x);
-// void	Parsing();
 void	*ft_malloc(size_t size);
 void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
 int 	draw_line(t_config *config, double endX, double endY, uint32_t color);
-void	parsing(int ac, char **av);
+t_map	*parsing(int ac, char **av);
+
+void	*ft_malloc(size_t size);
+void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
+int 	draw_line(t_config *config, double endX, double endY, uint32_t color);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*get_next_line(int fd);
 char    **ft_split(char const *s, char c);
@@ -107,3 +113,9 @@ char    *ft_substr(char const *s, unsigned int start, size_t len);
 char    *ft_strdup(const char *s);
 char    *ft_strtrim(char *s1, char *set);
 int     ft_strcmp(const char *s1, const char *s2);
+size_t  ft_strlen(const char *s);
+int    ft_error(int error);
+char	**ft_split(char const *s, char c);
+int		ft_strchr(const char *s, int c);
+
+#endif

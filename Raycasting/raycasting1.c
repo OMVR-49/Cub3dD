@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/25 22:58:43 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 02:40:20 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 	config->img = img;
 	config->map->ratioX = WIDTH / config->map->num_cols;
 	config->map->ratioY = HEIGHT / config->map->num_rows;
-	config->player.x = (*map)->playerX * (config->map->ratioY) + (config->map->ratioY / 2);
-	config->player.y = (*map)->playerY * (config->map->ratioX) + (config->map->ratioX / 2);
+	config->player.x = (*map)->playerX * (config->map->ratioX) + (config->map->ratioX / 2);
+	config->player.y = (*map)->playerY * (config->map->ratioY) + (config->map->ratioY / 2);
 	config->player.TurnDirection = 0;
 	config->player.WalkDirection = 0;
-	config->player.RotationAngle =0;
+	config->player.RotationAngle = 0;
 	if (config->map->PlayerRotationStart == 'N')
 		config->player.RotationAngle = 1.5 * M_PI;
 	else if (config->map->PlayerRotationStart == 'S')
@@ -39,21 +39,20 @@ void grid(t_config *config, int tileX , int tileY, uint32_t tileColor)
 {
 	int x;
 	int y;
-	int pixelX;
-	int pixelY;
+	double pixelX;
+	double pixelY;
 	
-	x = 0;
 	y = 0;
-	while(y < config->map->ratioY)
+	while(y <= config->map->ratioY)
 	{
 		x = 0;
-		while(x < config->map->ratioX)
+		while(x <= config->map->ratioX)
 		{
 			pixelX = tileX + x;
 			pixelY = tileY + y;
 			if (pixelX < WIDTH && pixelY < HEIGHT)
 				mlx_put_pixel(config->img, pixelX, pixelY, tileColor);
-			if(pixelX == 0 || pixelY == 0 || x == config->map->ratioX - 1 || y == config->map->ratioY - 1)
+			if(pixelX == 0 || pixelY == 0 || fabs(x - (config->map->ratioX - 1)) < 1 || fabs(y - (config->map->ratioY - 1)) < 1)
 				mlx_put_pixel(config->img, pixelX, pixelY, 0x000000FF);
 			x++;
 		}
@@ -97,22 +96,7 @@ void	setup_player(t_config *config)
 {
 	mlx_put_pixel(config->img, config->player.x, config->player.y ,0xFF2E2EFF);
 }
-void	setup_line(t_config *config)
-{
-	int x;
-	int y;
-	x = config->player.x;
-	y = config->player.y;
-	draw_line(config, x + cos(config->player.RotationAngle) * 50, y + sin(config->player.RotationAngle) * 50, 0x7f11e099);
-	mlx_image_to_window(config->mlx, config->img, 0, 0);
-}
 
-
-bool	KeyPressed1(t_config *config)
-{
-	
-	return (false);
-}
 int	KeyPressed(t_config *config)
 {
 	int i;
@@ -219,11 +203,11 @@ void	castVerticalRay(t_config *config, t_ray *ray)
 	double nextVertTouchX;
 	double nextVertTouchY;
 
-	xintercept = floor(config->player.x / (config->map->ratioY)) * ( config->map->ratioY);
+	xintercept = floor(config->player.x / (config->map->ratioX)) * ( config->map->ratioX);
 	if (ray->isRayFacingRight)
-		xintercept += (config->map->ratioY);
+		xintercept += (config->map->ratioX);
 	yintercept = config->player.y + (xintercept - config->player.x) * tan(ray->rayAngle);
-	ray->XincV = config->map->ratioY;
+	ray->XincV = config->map->ratioX;
 	if (ray->isRayFacingLeft)
 		ray->XincV *= -1;
 	ray->YincV = ray->XincV * tan(ray->rayAngle);
@@ -269,11 +253,11 @@ void	castHorizontalRay(t_config *config, t_ray *ray)
 	double nextHorzTouchX;
 	double nextHorzTouchY;
 
-	yintercept = floor(config->player.y / (config->map->ratioX)) * (config->map->ratioX);
+	yintercept = floor(config->player.y / (config->map->ratioY)) * (config->map->ratioY);
 	if (ray->isRayFacingDown)
-		yintercept += config->map->ratioX;
+		yintercept += config->map->ratioY;
 	xintercept = config->player.x + (yintercept - config->player.y) / tan(ray->rayAngle);
-	ray->YincH = config->map->ratioX;
+	ray->YincH = config->map->ratioY;
 	if (ray->isRayFacingUp)
 		ray->YincH *= -1;
 	ray->XincH = ray->YincH / tan(ray->rayAngle);
@@ -343,7 +327,7 @@ void	castAllRays(t_config *config)
 
 	stripId = 0;
 	rayAngle = config->player.RotationAngle - (FOV_ANGLE / 2);
-	while(stripId < NUM_RAYS) //rdha NUM_RAY rak ghir ttebe3 dakchi li kaydir pikuma bach tefhem
+	while(stripId < NUM_RAYS) 
 	{
 		castRay(config, stripId, rayAngle);
 		draw_line(config,config->rays[stripId].wallHitX, config->rays[stripId].wallHitY, 0xFF0000FF); // check
@@ -369,7 +353,7 @@ void Update(t_config *config)
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }
 
-void	Hook(void *param) // if necessery typecast the void parameter u understand
+void	Hook(void *param)
 {
 	t_config *config;
 
@@ -392,7 +376,6 @@ void raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 	initialize(config, &map , mlx, img);
 	setup_map(config);
 	setup_player(config);
-	// setup_line(config);
 	setup_fov(config);
 	
 	// lkhedma kamla hna t genera l merra llwla mn be3d teb9a 3ndk function we7da li 
