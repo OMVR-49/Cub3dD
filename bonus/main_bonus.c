@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 21:03:43 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 22:34:14 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Cub3d.h"
+#include "Cub3d_bonus.h"
 
 int	ft_error(int x)
 {
@@ -85,15 +85,13 @@ int	main(int ac, char **av)
 	t_map		*map;
 	mlx_t		*mlx;
 
-	map = NULL;
-	mlx = NULL;
 	if (ac == 2)
 	{
 		map = parsing(ac, av);
 		if (map)
 		{
-			mlx_set_setting(0, true);
-			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
+			mlx_set_setting(0, false);
+			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", false);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
 			raycasting(map, mlx, img);
 		}

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cub3d.h                                            :+:      :+:    :+:   */
+/*   Cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 22:47:56 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 23:13:41 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -20,8 +20,8 @@
 # include <math.h>
 # include <limits.h>
 # include <fcntl.h>
-# include "MLX42/include/MLX42/MLX42.h"
-# include "get_next_line/get_next_line.h"
+# include "../MLX42/include/MLX42/MLX42.h"
+# include "get_next_line/get_next_line_bonus.h"
 
 # define PI 3.141592653589793238
 # define TILE_SIZE  32
@@ -62,8 +62,8 @@ typedef struct s_map
 	int				num_rows; // number of rows
 	int				player_x;
 	int				player_y;
-	int				ratiox; // dyali ana omar
-	int				ratioy; //dyali ana omar
+	double			ratiox; // dyali ana omar
+	double			ratioy; //dyali ana omar
 }			t_map;
 
 typedef struct s_ray
@@ -130,7 +130,7 @@ void		setup_wall(t_config *config);
 void		cast_ray(t_config *config, int stripId, double rayangle);
 void		cast_all_rays(t_config *config);
 void		wall3d(t_config *config, double wallstripheight, int j, t_ray ray);
-void		ceil2dfloor1d(t_config *config, int i);
+void		ceil2dfloor1d(t_config *config);
 void		whileforvert(t_config *config, t_ray *ray, double nvtx, \
 double nvty);
 void		cast_vertical_ray(t_config *config, t_ray *ray);

@@ -6,11 +6,59 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:51:09 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 11:43:15 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 21:13:27 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
+
+uint32_t	set_color(t_ray ray)
+{
+	if (ray.wasvertical && ray.israyfdown)
+		return (0x00FF00FF);
+	else if (ray.wasvertical && ray.israyfup)
+		return (0xFDEE00FF);
+	else if (!ray.wasvertical && ray.israyfright)
+		return (0x0048BAFF);
+	else if (!ray.wasvertical && ray.israyfleft)
+		return (0xC1CDCDFF);
+	return (0);
+}
+
+void	wall3d(t_config *config, double wallstripheight, int j, t_ray ray)
+{
+	uint32_t	color;
+	int			i;
+
+	i = 0;
+	color = set_color(ray);
+	while (i < wallstripheight / 2)
+	{
+		mlx_put_pixel(config->img, j, (HEIGHT / 2) - i, color);
+		i++;
+	}
+	i = 0;
+	while (i < wallstripheight / 2)
+	{
+		mlx_put_pixel(config->img, j, (HEIGHT / 2) + i, color);
+		i++;
+	}
+}
+
+void	ceil2dfloor1d(t_config *config, int i)
+{
+	int	j;
+
+	j = 0;
+	while (j < HEIGHT)
+	{
+		if (j < HEIGHT / 2)
+			mlx_put_pixel(config->img, i, j, config->map->c);
+		if (j > HEIGHT / 2)
+			mlx_put_pixel(config->img, i, j, config->map->f);
+		j++;
+	}
+}
 
 void	setup_wall(t_config *config)
 {
@@ -30,71 +78,20 @@ void	setup_wall(t_config *config)
 		wall3d(config, config->rays[i].wallstripheight, i, config->rays[i]);
 		i++;
 	}
-}
-
-void	setup_fov(t_config *config)
-{
-	cast_all_rays(config);
-}
-
-void	setup_player(t_config *config)
-{
-	mlx_put_pixel(config->img, config->player.x * MAP_SCALE,
-		config->player.y * MAP_SCALE, 0xFF2E2EFF);
-}
-
-void	grid(t_config *config, int tileX, int tileY, uint32_t tileColor)
-{
-	double	pixelx;
-	double	pixely;
-	int		x;
-	int		y;
-
-	y = 0;
-	while (y <= config->map->ratioy)
-	{
-		x = 0;
-		while (x <= config->map->ratiox)
-		{
-			pixelx = tileX + x;
-			pixely = tileY + y;
-			if (pixelx < WIDTH && pixely < HEIGHT)
-				mlx_put_pixel(config->img, pixelx * MAP_SCALE, pixely * \
-					MAP_SCALE, tileColor);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	setup_map(t_config *config)
-{
-	uint32_t	tile_color;
-	int			tilex;
-	int			tiley;
-	int			x;
-	int			y;
-
-	tiley = 0;
-	y = 0;
-	while (y < config->map->num_rows)
-	{
-		tilex = 0;
-		x = 0;
-		while (x < config->map->num_cols)
-		{
-			if (config->map->grid[y][x] == '1')
-				tile_color = 0x2E2EFFFF;
-			else if (config->map->grid[y][x] == '0')
-				tile_color = 0xFFFFFFFF;
-			else if (config->map->grid[y][x] == ' ')
-				tile_color = 0x000000FF;
-			grid(config, tilex, tiley, tile_color);
-			tilex += config->map->ratiox;
-			x++;
-		}
-		tiley += config->map->ratioy;
-		y++;
-	}
 	mlx_image_to_window(config->mlx, config->img, 0, 0);
+}
+
+void	cast_all_rays(t_config *config)
+{
+	double	rayangle;
+	int		stripid;
+
+	stripid = 0;
+	rayangle = config->player.rotation_angle - (config->player.fov_angle / 2);
+	while (stripid < NUM_RAYS)
+	{
+		cast_ray(config, stripid, rayangle);
+		rayangle += config->player.fov_angle / NUM_RAYS;
+		stripid++;
+	}
 }
