@@ -3,82 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 11:35:16 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 23:29:49 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
 
-int	ft_error(int x)
+void	ft_putchar_fd(char c, int fd)
 {
-	if (x == 1)
-		perror("Invalid Argumentss");
-	else if (x == 2)
-		perror("");
-	else if (x == 3)
-		perror("");
+	write(fd, &c, 1);
+}
+
+void	ft_putstr_fd(char const *s, int fd)
+{
+	if (s != NULL)
+	{
+		while (*s != '\0')
+		{
+			write(fd, s, 1);
+			s++;
+		}
+	}
+}
+
+void	ft_message(char *message, int x)
+{
+	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(message, 2);
+	ft_putchar_fd('\n', 2);
 	exit(x);
 }
 
-// void	test(t_map **map)
-// {
-// 	int i = 0;
-// 	(*map) = ft_malloc(sizeof(t_map));
-// 	(*map)->grid = ft_malloc(30 * sizeof(char *));
-// 	while (i < 30)
-// 	{
-// 		(*map)->grid[i] = ft_malloc(30 * sizeof(char));
-// 		i++;
-// 	}
-// 	(*map)->grid[0] = "111111111111111111111111111111";
-// 	(*map)->grid[1] = "100000000000000000000000000001";
-// 	(*map)->grid[2] = "100000000000000000000000000001";
-// 	(*map)->grid[3] = "100000000000000000000000000001";
-// 	(*map)->grid[4] = "100000000000000000000000000001";
-// 	(*map)->grid[5] = "100000000000000000000000000001";
-// 	(*map)->grid[6] = "100000000000000000000000000001";
-// 	(*map)->grid[7] = "100000000000000000000000000001";
-// 	(*map)->grid[8] = "100000000000000000000000000001";
-// 	(*map)->grid[9] = "100000000000000000000000000001";
-// 	(*map)->grid[10] = "100000000000000000000000000001";
-// 	(*map)->grid[11] = "100000000000000000000000000001";
-// 	(*map)->grid[12] = "100000000000000000000000000001";
-// 	(*map)->grid[13] = "100000000000000000000000000001";
-// 	(*map)->grid[14] = "100000000000000000000000000001";
-// 	(*map)->grid[15] = "100000000000000000000000000001";
-// 	(*map)->grid[16] = "100000000000000000000000000001";
-// 	(*map)->grid[17] = "100000000000000000000000000001";
-// 	(*map)->grid[18] = "100000000000000000000000000001";
-// 	(*map)->grid[19] = "100000000000000000000000000001";
-// 	(*map)->grid[20] = "100000000000000000000000000001";
-// 	(*map)->grid[21] = "100000000000000000000000000001";
-// 	(*map)->grid[22] = "100000000000000000000000000001";
-// 	(*map)->grid[23] = "100000000000000000000000000001";
-// 	(*map)->grid[24] = "100000000000000000000000000001";
-// 	(*map)->grid[25] = "100000000000000000000000000001";
-// 	(*map)->grid[26] = "100000000000000000000000000001";
-// 	(*map)->grid[27] = "100000000000000000000000000001";
-// 	(*map)->grid[28] = "100000000000000000000000000001";
-// 	(*map)->grid[29] = "111111111111111111111111111111";
-// 	(*map)->num_cols = 30;
-// 	(*map)->num_rows = 30;
-// 	(*map)->f = ft_malloc(4 * sizeof(int *));
-// 	(*map)->c = ft_malloc(4 * sizeof(int *));
-// 	(*map)->f[0] = 0;
-// 	(*map)->f[1] = 0;
-// 	(*map)->f[2] = 0;
-// 	(*map)->f[3] = 0;
-// 	(*map)->c[0] = 0;
-// 	(*map)->c[1] = 0;
-// 	(*map)->c[2] = 0;
-// 	(*map)->c[3] = 0;
-// 	(*map)->player_rotation_start = 'N';
-// 	(*map)->player_x = 15;
-// 	(*map)->player_y = 15;
-// }
+void	ft_error(int x)
+{
+	if (x == 1)
+		ft_message("Wrong number of arguments", 1);
+	else if (x == 2)
+		ft_message("Wrong file extension", 2);
+	else if (x == 3)
+		ft_message("File not found", 3);
+	else if (x == 4)
+		ft_message("Wrong number of arguments", 4);
+	else if (x == 5)
+		ft_message("missing key", 5);
+	else if (x == 6)
+		ft_message("multiple player", 6);
+	else if (x == 7)
+		ft_message("invalid char in map", 7);
+	else if (x == 8)
+		ft_message("invalid color", 8);
+	else if (x == 9)
+		ft_message("no player", 9);
+	else if (x == 10)
+		ft_message("invalid map", 10);
+	else if (x == 11)
+		ft_message("no map", 11);
+	else if (x == 15)
+		ft_message("empty line in the middle of the map", 15);
+}
+
 int	main(int ac, char **av)
 {
 	mlx_image_t	*img;

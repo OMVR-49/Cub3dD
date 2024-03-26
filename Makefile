@@ -3,20 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+         #
+#    By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/26 11:33:25 by ojebbari         ###   ########.fr        #
+#    Updated: 2024/03/26 22:06:42 by sacharai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = main.c  Raycasting/raycasting1.c Raycasting/raycasting2.c Raycasting/raycasting3.c Raycasting/raycasting4.c Raycasting/raycasting5.c tools.c \
 				Parsing/parsing.c \
 				Parsing/parsing_help.c \
+				Parsing/parsing_help1.c \
+				Parsing/parsing_help2.c \
+				Parsing/parsing_help3.c \
+				Parsing/parsing_help4.c \
 				get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c \
 				Parsing/ft_split.c \
 				Parsing/ft_atoi.c \
+				Parsing/insert_node.c \
 				
 
 CFLAGS =  -fsanitize=address -g3 -g
