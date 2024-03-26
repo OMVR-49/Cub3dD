@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 06:05:12 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 09:53:04 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,17 @@ void	*ft_malloc(size_t size)
 	return (ptr);
 }
 
-int get_rgba(int r, int g, int b, int a)
+double distanceBetweenPoints(double x1, double y1, double x2, double y2)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
-void set_rgba(int color)
+
+double normalizeAngle(double angle)
 {
-	
+	angle = fmod(angle, 2 * M_PI);
+	if (angle < 0)
+		angle = (2 * M_PI) + angle;
+	else if (angle > (2 * M_PI))
+		angle = angle - (2 * M_PI);
+	return (angle);
 }

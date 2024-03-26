@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 07:18:57 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:07:32 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,38 @@ typedef struct s_start
 	struct s_start *next;
 } 			t_start;
 
+// rayCasting:
+void	initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img);
+void	Update(t_config *config);
+void	Hook(void *param);
+void	grid(t_config *config, int tileX , int tileY, uint32_t tileColor);
+void	setup_map(t_config *config);
+void	setup_player(t_config *config);
+void	setup_fov(t_config *config);
+void	setup_wall(t_config *config);
+void	castRay(t_config *config, int stripId, double rayAngle);
+void 	castAllRays(t_config *config);
+uint32_t	set_color(t_ray ray);
+void 	wall3D(t_config *config, double wallStripHeight, int j, t_ray ray);
+void	ceil2DFloor1D(t_config *config, int i);
+void 	whileForVert(t_config *config, t_ray *ray, double nextVertTouchX, double nextVertTouchY);
+void	castVerticalRay(t_config *config, t_ray *ray);
+void	whileForHorz(t_config *config, t_ray *ray, double nextHorzTouchX, double nextHorzTouchY);
+void	castHorizontalRay(t_config *config, t_ray *ray);
+void	findClosestWallHit(t_config *config, t_ray *ray);
+int		KeyPressed(t_config *config);
+int		isWall(t_config *config, double x, double y);
+void	UpdatePlayerPos(t_config *config);
+// tools :
+int 	draw_line(t_config *config, double endX, double endY, uint32_t color);
+void	*ft_malloc(size_t size);
+double	distanceBetweenPoints(double x1, double y1, double x2, double y2);
+double	normalizeAngle(double angle);
+
+
 int		ft_error(int x);
 // void	Parsing();
-void	*ft_malloc(size_t size);
 void 	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
-int 	draw_line(t_config *config, double endX, double endY, uint32_t color);
 t_map	*parsing(int ac, char **av);
 int     ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*get_next_line(int fd);
