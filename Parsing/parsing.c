@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:36 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 00:13:15 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:19:47 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ void valid_map(char **map)
 	chack_spaces(newmap);
 	
 }
+
 void parsing(int ac, char **av)
 {
     int fd;
@@ -261,5 +262,5 @@ void parsing(int ac, char **av)
 	check_map_valid_char(maparray);
 	valid_map(maparray);
     close(fd);
-	 return *mapp; 
+	//  return *mapp; 
 }
