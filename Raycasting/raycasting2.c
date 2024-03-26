@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:51:09 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 10:03:36 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:43:15 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,84 +14,87 @@
 
 void	setup_wall(t_config *config)
 {
-	int i;
-	double rayDistance;
+	double	ray_distance;
+	int		i;
 
 	i = 0;
 	while (i < NUM_RAYS)
 	{
-		rayDistance = config->rays[i].distance * cos(config->rays[i].rayAngle - config->player.RotationAngle);
-		config->rays[i].wallStripHeight = (config->map->ratioY / rayDistance) * dPP; // maybe replace width by numcos
-		if (config->rays[i].wallStripHeight > HEIGHT)
-			config->rays[i].wallStripHeight = HEIGHT;
-		ceil2DFloor1D(config, i);
-		wall3D(config, config->rays[i].wallStripHeight, i, config->rays[i]);
+		ray_distance = config->rays[i].distance * \
+			cos(config->rays[i].rayangle - config->player.rotation_angle);
+		config->rays[i].wallstripheight = \
+			(config->map->ratioy / ray_distance) * config->player.dpp;
+		if (config->rays[i].wallstripheight > HEIGHT)
+			config->rays[i].wallstripheight = HEIGHT;
+		ceil2dfloor1d(config, i);
+		wall3d(config, config->rays[i].wallstripheight, i, config->rays[i]);
 		i++;
 	}
 }
 
 void	setup_fov(t_config *config)
 {
-	castAllRays(config);
+	cast_all_rays(config);
 }
 
 void	setup_player(t_config *config)
 {
-	mlx_put_pixel(config->img, config->player.x * MAP_Scale, config->player.y * MAP_Scale ,0xFF2E2EFF);
+	mlx_put_pixel(config->img, config->player.x * MAP_SCALE,
+		config->player.y * MAP_SCALE, 0xFF2E2EFF);
 }
 
-
-void grid(t_config *config, int tileX , int tileY, uint32_t tileColor)
+void	grid(t_config *config, int tileX, int tileY, uint32_t tileColor)
 {
-	int x;
-	int y;
-	double pixelX;
-	double pixelY;
-	
+	double	pixelx;
+	double	pixely;
+	int		x;
+	int		y;
+
 	y = 0;
-	while(y <= config->map->ratioY)
+	while (y <= config->map->ratioy)
 	{
 		x = 0;
-		while(x <= config->map->ratioX)
+		while (x <= config->map->ratiox)
 		{
-			pixelX = tileX + x;
-			pixelY = tileY + y;
-			if (pixelX < WIDTH && pixelY < HEIGHT)
-				mlx_put_pixel(config->img, pixelX * MAP_Scale, pixelY * MAP_Scale, tileColor);
+			pixelx = tileX + x;
+			pixely = tileY + y;
+			if (pixelx < WIDTH && pixely < HEIGHT)
+				mlx_put_pixel(config->img, pixelx * MAP_SCALE, pixely * \
+					MAP_SCALE, tileColor);
 			x++;
 		}
 		y++;
 	}
 }
 
-void setup_map(t_config *config)
+void	setup_map(t_config *config)
 {
-	uint32_t tileColor;
-	int tileY;
-	int tileX;
-	int x;
-	int y;
+	uint32_t	tile_color;
+	int			tilex;
+	int			tiley;
+	int			x;
+	int			y;
 
-	tileY = 0;
+	tiley = 0;
 	y = 0;
 	while (y < config->map->num_rows)
 	{
-		tileX = 0;
+		tilex = 0;
 		x = 0;
 		while (x < config->map->num_cols)
 		{
-			if(config->map->grid[y][x] == '1')
-				tileColor = 0x2E2EFFFF;
+			if (config->map->grid[y][x] == '1')
+				tile_color = 0x2E2EFFFF;
 			else if (config->map->grid[y][x] == '0')
-				tileColor = 0xFFFFFFFF;
-			else if(config->map->grid[y][x] == ' ')
-				tileColor = 0x000000FF;
-			grid(config, tileX, tileY, tileColor);
-			tileX += config->map->ratioX;
+				tile_color = 0xFFFFFFFF;
+			else if (config->map->grid[y][x] == ' ')
+				tile_color = 0x000000FF;
+			grid(config, tilex, tiley, tile_color);
+			tilex += config->map->ratiox;
 			x++;
 		}
-		tileY += config->map->ratioY;
+		tiley += config->map->ratioy;
 		y++;
-}
-mlx_image_to_window(config->mlx, config->img, 0, 0);
+	}
+	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }

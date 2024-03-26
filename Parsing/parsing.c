@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:36 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 03:12:50 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:41:46 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,11 +370,9 @@ t_map *parsing(int ac, char **av)
 	maparray[i] = NULL;
 	t_ply *help = check_map_valid_char(maparray);
 	mapp = valid_map(maparray);
-	mapp->PlayerRotationStart = help->direction;
-	mapp->playerX = help->y;
-	mapp->playerY = help->x;
-	printf("playerX %d\n", mapp->playerX);
-	printf("playerY %d\n", mapp->playerY);
+	mapp->player_rotation_start = help->direction;
+	mapp->player_x = help->y;
+	mapp->player_y = help->x;
 	mapp->f = rgb[1];
 	mapp->c = rgb[0];
 	free(help);

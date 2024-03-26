@@ -6,16 +6,11 @@
 #    By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/26 10:08:18 by ojebbari         ###   ########.fr        #
+#    Updated: 2024/03/26 11:33:25 by ojebbari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = main.c  Raycasting/raycasting1.c \
-				Raycasting/raycasting2.c \
-				Raycasting/raycasting3.c \
-				Raycasting/raycasting4.c \
-				Raycasting/raycasting5.c \
-				tools.c \
+SRC = main.c  Raycasting/raycasting1.c Raycasting/raycasting2.c Raycasting/raycasting3.c Raycasting/raycasting4.c Raycasting/raycasting5.c tools.c \
 				Parsing/parsing.c \
 				Parsing/parsing_help.c \
 				get_next_line/get_next_line.c \

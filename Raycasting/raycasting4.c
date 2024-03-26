@@ -6,145 +6,143 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:57:48 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 09:58:41 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:35:54 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-
-void	whileForVert(t_config *config, t_ray *ray, double nextVertTouchX, double nextVertTouchY)
+void	whileforvert(t_config *config, t_ray *ray, double nvtx, double nvty)
 {
-	double xToCheck;
-	double yToCheck;
+	double	xtocheck;
+	double	ytocheck;
 
-	while(nextVertTouchX >= 0 && nextVertTouchX <= WIDTH && nextVertTouchY >= 0 && nextVertTouchY <= HEIGHT)
+	while (nvtx >= 0 && nvtx <= WIDTH && nvty >= 0 && nvty <= HEIGHT)
 	{
-		if(ray->isRayFacingLeft)
-			xToCheck = nextVertTouchX - 1;
+		if (ray->israyfleft)
+			xtocheck = nvtx - 1;
 		else
-			xToCheck = nextVertTouchX;
-		yToCheck = nextVertTouchY;
-		if (ray->isRayFacingLeft)
-			xToCheck--;
-		if(isWall(config, xToCheck, yToCheck))
+			xtocheck = nvtx;
+		ytocheck = nvty;
+		if (ray->israyfleft)
+			xtocheck--;
+		if (is_wall(config, xtocheck, ytocheck))
 		{
-			ray->foundHitVertical = true;
-			ray->wallHitXV = nextVertTouchX;
-			ray->wallHitYV = nextVertTouchY;
-			break;
+			ray->foundhitvertical = true;
+			ray->wallhitxv = nvtx;
+			ray->wallhityv = nvty;
+			break ;
 		}
 		else
 		{
-			nextVertTouchX += ray->XincV;
-			nextVertTouchY += ray->YincV;
-		}
-	}
-}
-
-void	castVerticalRay(t_config *config, t_ray *ray)
-{
-	double yintercept;
-	double xintercept;
-	double nextVertTouchX;
-	double nextVertTouchY;
-
-	xintercept = floor(config->player.x / (config->map->ratioX)) * ( config->map->ratioX);
-	if (ray->isRayFacingRight)
-		xintercept += (config->map->ratioX);
-	yintercept = config->player.y + (xintercept - config->player.x) * tan(ray->rayAngle);
-	ray->XincV = config->map->ratioX;
-	if (ray->isRayFacingLeft)
-		ray->XincV *= -1;
-	ray->YincV = ray->XincV * tan(ray->rayAngle);
-	if(ray->isRayFacingUp && ray->YincV > 0)
-		ray->YincV *= -1;
-	if(ray->isRayFacingDown && ray->YincV < 0)
-		ray->YincV *= -1;
-	nextVertTouchX = xintercept;
-	nextVertTouchY = yintercept;
-	whileForVert(config, ray, nextVertTouchX, nextVertTouchY);
-}
-
-
-void	whileForHorz(t_config *config, t_ray *ray, double nextHorzTouchX, double nextHorzTouchY)
-{
-	double xToCheck;
-	double yToCheck;
-
-	while(nextHorzTouchX >= 0 && nextHorzTouchX <= WIDTH && nextHorzTouchY >= 0 && nextHorzTouchY <= HEIGHT)
-	{
-		xToCheck = nextHorzTouchX;
-		if(ray->isRayFacingUp)
-			yToCheck = nextHorzTouchY - 1;
-		else
-			yToCheck = nextHorzTouchY;
-		if (isWall(config, xToCheck, yToCheck))
-		{
-			ray->foundHitHorizontal = true;
-			ray->wallHitXH = nextHorzTouchX;
-			ray->wallHitYH = nextHorzTouchY;
-			break;
-		}
-		else
-		{
-			nextHorzTouchX += ray->XincH;
-			nextHorzTouchY += ray->YincH;
+			nvtx += ray->xincv;
+			nvty += ray->yincv;
 		}
 	}
 }
 
-
-void	castHorizontalRay(t_config *config, t_ray *ray)
+void	cast_vertical_ray(t_config *config, t_ray *ray)
 {
-	double yintercept;
-	double xintercept;
-	double nextHorzTouchX;
-	double nextHorzTouchY;
+	double	nextverttouchx;
+	double	nextverttouchy;
+	double	yintercept;
+	double	xintercept;
 
-	yintercept = floor(config->player.y / (config->map->ratioY)) * (config->map->ratioY);
-	if (ray->isRayFacingDown)
-		yintercept += config->map->ratioY;
-	xintercept = config->player.x + (yintercept - config->player.y) / tan(ray->rayAngle);
-	ray->YincH = config->map->ratioY;
-	if (ray->isRayFacingUp)
-		ray->YincH *= -1;
-	ray->XincH = ray->YincH / tan(ray->rayAngle);
-	if(ray->isRayFacingLeft && ray->XincH > 0)
-		ray->XincH *= -1;
-	if(ray->isRayFacingRight && ray->XincH < 0)
-		ray->XincH *= -1;
-	nextHorzTouchX = xintercept;
-	nextHorzTouchY = yintercept;
-	whileForHorz(config, ray, nextHorzTouchX, nextHorzTouchY);
+	xintercept = floor(config->player.x / (config->map->ratiox)) * \
+	(config->map->ratiox);
+	if (ray->israyfright)
+		xintercept += (config->map->ratiox);
+	yintercept = config->player.y + (xintercept - config->player.x) * \
+	tan(ray->rayangle);
+	ray->xincv = config->map->ratiox;
+	if (ray->israyfleft)
+		ray->xincv *= -1;
+	ray->yincv = ray->xincv * tan(ray->rayangle);
+	if (ray->israyfup && ray->yincv > 0)
+		ray->yincv *= -1;
+	if (ray->israyfdown && ray->yincv < 0)
+		ray->yincv *= -1;
+	nextverttouchx = xintercept;
+	nextverttouchy = yintercept;
+	whileforvert(config, ray, nextverttouchx, nextverttouchy);
 }
 
-
-
-void	findClosestWallHit(t_config *config, t_ray *ray)
+void	whileforhorz(t_config *config, t_ray *ray, double nhtx, double nhty)
 {
-	double hDistance;
-	double vDistance;
+	double	xtocheck;
+	double	ytocheck;
 
-	if (ray->foundHitHorizontal)
-		hDistance = distanceBetweenPoints(config->player.x, config->player.y, ray->wallHitXH, ray->wallHitYH);
-	else
-		hDistance = INT_MAX;
-	if (ray->foundHitVertical)
-		vDistance = distanceBetweenPoints(config->player.x, config->player.y, ray->wallHitXV, ray->wallHitYV);
-	else
-		vDistance = INT_MAX;
-	if (vDistance < hDistance)
+	while (nhtx >= 0 && nhtx <= WIDTH && nhty >= 0 && nhty <= HEIGHT)
 	{
-		ray->wallHitX = ray->wallHitXV;
-		ray->wallHitY = ray->wallHitYV;
-		ray->distance = vDistance;
+		xtocheck = nhtx;
+		if (ray->israyfup)
+			ytocheck = nhty - 1;
+		else
+			ytocheck = nhty;
+		if (is_wall(config, xtocheck, ytocheck))
+		{
+			ray->foundhithorizontal = true;
+			ray->wallhitxh = nhtx;
+			ray->wallhityh = nhty;
+			break ;
+		}
+		else
+		{
+			nhtx += ray->xinch;
+			nhty += ray->yinch;
+		}
+	}
+}
+
+void	cast_horizontal_ray(t_config *config, t_ray *ray)
+{
+	double	nexthorztouchx;
+	double	nexthorztouchy;
+	double	yintercept;
+	double	xintercept;
+
+	yintercept = floor(config->player.y / (config->map->ratioy)) * \
+	(config->map->ratioy);
+	if (ray->israyfdown)
+		yintercept += config->map->ratioy;
+	xintercept = config->player.x + (yintercept - config->player.y) / \
+	tan(ray->rayangle);
+	ray->yinch = config->map->ratioy;
+	if (ray->israyfup)
+		ray->yinch *= -1;
+	ray->xinch = ray->yinch / tan(ray->rayangle);
+	if (ray->israyfleft && ray->xinch > 0)
+		ray->xinch *= -1;
+	if (ray->israyfright && ray->xinch < 0)
+		ray->xinch *= -1;
+	nexthorztouchx = xintercept;
+	nexthorztouchy = yintercept;
+	whileforhorz(config, ray, nexthorztouchx, nexthorztouchy);
+}
+
+void	find_closest_wall_hit(t_config *config, t_ray *ray)
+{
+	if (ray->foundhithorizontal)
+		ray->h_distance = distance_between_points(config->player.x, \
+		config->player.y, ray->wallhitxh, ray->wallhityh);
+	else
+		ray->h_distance = INT_MAX;
+	if (ray->foundhitvertical)
+		ray->v_distance = distance_between_points(config->player.x, \
+		config->player.y, ray->wallhitxv, ray->wallhityv);
+	else
+		ray->v_distance = INT_MAX;
+	if (ray->v_distance < ray->h_distance)
+	{
+		ray->wallhitx = ray->wallhitxv;
+		ray->wallhity = ray->wallhityv;
+		ray->distance = ray->v_distance;
 	}
 	else
 	{
-		ray->wallHitX = ray->wallHitXH;
-		ray->wallHitY = ray->wallHitYH;
-		ray->distance = hDistance;
+		ray->wallhitx = ray->wallhitxh;
+		ray->wallhity = ray->wallhityh;
+		ray->distance = ray->h_distance;
 		ray->wasvertical = true;
 	}
 }

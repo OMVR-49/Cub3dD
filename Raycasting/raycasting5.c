@@ -6,67 +6,72 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:58:59 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 10:06:49 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:36:00 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-int	KeyPressed(t_config *config)
+int	key_pressed(t_config *config)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (mlx_is_key_down(config->mlx, MLX_KEY_S))
-		config->player.WalkDirection = -1 + (0 * i++);
+		config->player.walk_direction = -1 + (0 * i++);
 	if (mlx_is_key_down(config->mlx, MLX_KEY_W))
-		config->player.WalkDirection = 1 + (0 * i++);
+		config->player.walk_direction = 1 + (0 * i++);
 	if (mlx_is_key_down(config->mlx, MLX_KEY_RIGHT))
-		config->player.TurnDirection = 1 + (0 * i++);
+		config->player.turn_direction = 1 + (0 * i++);
 	if (mlx_is_key_down(config->mlx, MLX_KEY_LEFT))
-		config->player.TurnDirection = -1 + (0 * i++);
+		config->player.turn_direction = -1 + (0 * i++);
 	if (mlx_is_key_down(config->mlx, MLX_KEY_D))
-		config->player.StrafeDirection = 1 + (0 * i++);
+		config->player.strafe_direction = 1 + (0 * i++);
 	if (mlx_is_key_down(config->mlx, MLX_KEY_A))
-		config->player.StrafeDirection = -1 + (0 * i++);
+		config->player.strafe_direction = -1 + (0 * i++);
 	if (mlx_is_key_down(config->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(config->mlx);
-	return(i);
+	return (i);
 }
 
-int isWall(t_config *config, double x, double y)
+int	is_wall(t_config *config, double x, double y)
 {
-	int mapGridIndexX;
-	int mapGridIndexY;
+	int	mx;
+	int	my;
 
 	if (x <= 0 || x >= WIDTH || y <= 0 || y >= HEIGHT)
 		return (1);
-	mapGridIndexX = floor(x / (config->map->ratioX));
-	mapGridIndexY = floor(y / (config->map->ratioY));
-	if (mapGridIndexX < 0 || mapGridIndexX >= config->map->num_cols || mapGridIndexY < 0 || mapGridIndexY >= config->map->num_rows)
+	mx = floor(x / (config->map->ratiox));
+	my = floor(y / (config->map->ratioy));
+	if (mx < 0 || mx >= config->map->num_cols || my < 0 || \
+	my >= config->map->num_rows)
 		return (1);
-	if (config->map->grid[mapGridIndexY][mapGridIndexX] == '1')
+	if (config->map->grid[my][mx] == '1')
 		return (1);
 	return (0);
 }
 
-void UpdatePlayerPos(t_config *config)
+void	update_player_pos(t_config *config)
 {
-	double moveStep;
-	double newPlayerX;
-	double newPlayerY;
-	double strafeStep;
+	double	move_step;
+	double	newplayer_x;
+	double	newplayer_y;
+	double	strafestep;
 
-	config->player.RotationAngle += config->player.TurnDirection * config->player.RotationSpeed;
-	moveStep = config->player.WalkDirection * config->player.MovementSpeed;
-	newPlayerX = config->player.x + cos(config->player.RotationAngle) * moveStep;
-	newPlayerY = config->player.y + sin(config->player.RotationAngle) * moveStep;
-	strafeStep = config->player.StrafeDirection * config->player.MovementSpeed;
-	newPlayerX += cos(config->player.RotationAngle + M_PI_2) * strafeStep;
-	newPlayerY += sin(config->player.RotationAngle + M_PI_2) * strafeStep;
-	if (!isWall(config, newPlayerX, newPlayerY))
+	config->player.rotation_angle += config->player.turn_direction * \
+	config->player.rotation_speed;
+	move_step = config->player.walk_direction * config->player.movement_speed;
+	newplayer_x = config->player.x + cos(config->player.rotation_angle) * \
+	move_step;
+	newplayer_y = config->player.y + sin(config->player.rotation_angle) * \
+	move_step;
+	strafestep = config->player.strafe_direction * \
+	config->player.movement_speed;
+	newplayer_x += cos(config->player.rotation_angle + M_PI_2) * strafestep;
+	newplayer_y += sin(config->player.rotation_angle + M_PI_2) * strafestep;
+	if (!is_wall(config, newplayer_x, newplayer_y))
 	{
-		config->player.x = newPlayerX;
-		config->player.y = newPlayerY;
+		config->player.x = newplayer_x;
+		config->player.y = newplayer_y;
 	}
 }

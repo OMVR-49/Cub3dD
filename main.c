@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 03:05:16 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:35:16 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
 
-int ft_error(int x)
+int	ft_error(int x)
 {
 	if (x == 1)
 		perror("Invalid Argumentss");
@@ -75,28 +75,23 @@ int ft_error(int x)
 // 	(*map)->c[1] = 0;
 // 	(*map)->c[2] = 0;
 // 	(*map)->c[3] = 0;
-// 	(*map)->PlayerRotationStart = 'N';
-// 	(*map)->playerX = 15;
-// 	(*map)->playerY = 15;
-
-	
-
+// 	(*map)->player_rotation_start = 'N';
+// 	(*map)->player_x = 15;
+// 	(*map)->player_y = 15;
 // }
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_map *map;
-	mlx_t *mlx;
-	mlx_image_t *img;
+	mlx_image_t	*img;
+	t_map		*map;
+	mlx_t		*mlx;
 
-	// test(&map);
-	if (ac == 2) // 1 bach ntester bla parsing
+	if (ac == 2)
 	{
 		map = parsing(ac, av);
 		if (map)
 		{
 			mlx_set_setting(0, true);
-			if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
-				exit(EXIT_FAILURE);
+			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
 			raycasting(map, mlx, img);
 		}
