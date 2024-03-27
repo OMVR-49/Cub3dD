@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 22:05:45 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 01:52:12 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 06:17:23 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ t_map	*valid_map(char **map)
 	newmap = create_newmap(map, max_size_line, mapp->num_rows);
 	chack_spaces(newmap);
 	mapp->grid = helpmap;
+	ft_free(newmap, count_table(newmap));
+	ft_free(map, count_table(map));
 	return (mapp);
 }
 

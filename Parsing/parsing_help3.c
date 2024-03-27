@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:40:13 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 01:37:56 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 06:39:17 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,15 @@ void	validate_map_chars(char **map, int i, int j)
 		ft_error(7);
 }
 
-t_ply	*player_position(char **map, int *p_find, t_ply *player, int i, int j)
+t_ply	*player_position(char **map, int *p_find, t_ply *player, t_point *p)
 {
-	if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W'
-		|| map[i][j] == 'E')
+	if (map[p->i][p->j] == 'N'
+		|| map[p->i][p->j] == 'S' || map[p->i][p->j] == 'W'
+		|| map[p->i][p->j] == 'E')
 	{
-		player->x = i;
-		player->y = j;
-		player->direction = map[i][j];
+		player->x = p->i;
+		player->y = p->j;
+		player->direction = map[p->i][p->j];
 		if (*p_find == 1)
 			ft_error(6);
 		*p_find = 1;
@@ -37,25 +38,23 @@ t_ply	*player_position(char **map, int *p_find, t_ply *player, int i, int j)
 
 t_ply	*check_map_valid_char(char **map)
 {
-	int		i;
-	int		j;
+	t_point	p;
 	int		p_find;
 	t_ply	*player;
 
 	player = ft_malloc(sizeof(t_ply));
-
-	i = 0;
+	p.i = 0;
 	p_find = 0;
-	while (map[i])
+	while (map[p.i])
 	{
-		j = 0;
-		while (map[i][j])
+		p.j = 0;
+		while (map[p.i][p.j])
 		{
-			validate_map_chars(map, i, j);
-			player = player_position(map, &p_find, player, i, j);
-			j++;
+			validate_map_chars(map, p.i, p.j);
+			player = player_position(map, &p_find, player, &p);
+			p.j++;
 		}
-		i++;
+		p.i++;
 	}
 	if (p_find == 0)
 		ft_error(9);

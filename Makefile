@@ -6,7 +6,7 @@
 #    By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/27 00:48:22 by sacharai         ###   ########.fr        #
+#    Updated: 2024/03/27 06:44:58 by sacharai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC =	main.c  Raycasting/raycasting1.c Raycasting/raycasting2.c \
 				Parsing/parsing_help3.c \
 				Parsing/parsing_help4.c \
 				Parsing/insert_node.c \
+				tools1.c \
 				
 SRS_BNS =	./bonus/main_bonus.c ./bonus/Raycasting/raycasting1_bonus.c \
 			./bonus/Raycasting/raycasting2_bonus.c \

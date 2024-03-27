@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:26:01 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 01:49:09 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 05:48:53 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,16 @@ t_start	*create_node(char *key, char *value)
 	node->rgb_num = NULL;
 	node->next = NULL;
 	return (node);
+}
+
+int	count_table(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
 void	validate_key(char *key, int flag)
@@ -46,6 +56,8 @@ void	validate_key(char *key, int flag)
 		if (flag == 0)
 			ft_error(5);
 	}
+	else
+		ft_free(table, count_table(table));
 }
 
 void	insert_node(t_start **head, char *key, char *value, int flag)

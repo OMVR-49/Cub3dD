@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 01:46:09 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 06:45:21 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,12 @@ typedef struct s_type
 	t_start *map;
 }		t_type;
 
+typedef struct s_point
+{
+	int	i;
+	int	j;
+}	t_point;
+
 // rayCasting:
 uint32_t	set_color(t_ray ray);
 void		initialize(t_config *config, t_map **map, mlx_t *mlx, \
@@ -194,5 +200,7 @@ char		**create_helpmap(char **map, int max_size_line, int num_rows);
 char		**create_newmap(char **map, int max_size_line, int num_rows);
 t_map		*valid_map(char **map);
 int			calculate_rgb(char **tmprgb);
-
+void		ft_free(char **strs, int j);
+int			count_table(char **str);
+void		ft_message(char *message, int x);
 #endif
