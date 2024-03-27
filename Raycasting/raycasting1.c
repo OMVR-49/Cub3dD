@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:22:27 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:51:29 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,8 @@ void	initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 	config->map->map_height = TILE_SIZE * config->map->num_rows;
 	config->mlx = mlx;
 	config->img = img;
-	config->map->ratiox = TILE_SIZE;
-	config->map->ratioy = TILE_SIZE;
-	config->player.x = (*map)->player_x * (config->map->ratiox) + \
-		(config->map->ratiox / 2);
-	config->player.y = (*map)->player_y * (config->map->ratioy) + \
-		(config->map->ratioy / 2);
+	config->player.x = (*map)->player_x * (TILE_SIZE) + (TILE_SIZE / 2);
+	config->player.y = (*map)->player_y * (TILE_SIZE) + (TILE_SIZE / 2);
 	config->player.turn_direction = 0;
 	config->player.walk_direction = 0;
 	config->player.strafe_direction = 0;

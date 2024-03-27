@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_help1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 20:56:50 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 07:07:31 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:56:41 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*ft_strtrim(char *s1, char *set)
 int	check_if_exist(t_start *head, char *key)
 {
 	t_start	*tmp;
-	char	**value;
 	int		i;
 
 	i = 0;

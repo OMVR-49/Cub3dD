@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_help2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:18:38 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 07:07:53 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:56:52 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int	help_parse_color(char *str)
 int	*parse_color(t_start *head)
 {
 	t_start	*tmp;
-	char	*tmprgb;
 	int		*rgb;
 
 	rgb = ft_malloc(sizeof(int) * 2);

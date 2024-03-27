@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 12:41:05 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:46:48 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:58:56 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,12 @@ void	setup_wall(t_config *config)
 		ray_distance = config->rays[i].distance * \
 			cos(config->rays[i].rayangle - config->player.rotation_angle);
 		config->rays[i].wallstripheight = \
-			(config->map->ratioy / ray_distance) * config->player.dpp;
+			(TILE_SIZE / ray_distance) * config->player.dpp;
 		if (config->rays[i].wallstripheight > HEIGHT)
 			config->rays[i].wallstripheight = HEIGHT;
 		ceil2dfloor1d(config, i);
 		wall3d(config, config->rays[i].wallstripheight, i, config->rays[i]);
 		i++;
 	}
+	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }

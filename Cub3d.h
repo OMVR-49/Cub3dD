@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:34:50 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:56:29 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ typedef struct s_ply
 typedef struct s_player
 {
 	double	strafe_direction;
-	double	turn_direction; // -1 if left , +1 if right , 0 nothing
-	double	walk_direction; // -1 if back , +1 if front , 0 nothing
-	double	rotation_angle; //
-	double	movement_speed; //
-	double	rotation_speed; //
+	double	turn_direction;
+	double	walk_direction;
+	double	rotation_angle;
+	double	movement_speed;
+	double	rotation_speed;
 	double	fov_angle;
 	double	dpp;
-	double	x; // x place of my player
-	double	y; // y place of my player
+	double	x;
+	double	y;
 }				t_player;
 
 typedef struct s_start
@@ -65,14 +65,12 @@ typedef struct s_map
 {
 	unsigned char	player_rotation_start; // 'N', 'S', 'E', 'W'
 	char			**grid;
-	uint32_t		f; // alloc 4 bytes for each color
-	uint32_t		c; // alloc 4 bytes for each color
-	int				num_cols; // number of columns
-	int				num_rows; // number of rows
+	uint32_t		f;
+	uint32_t		c; 
+	int				num_cols;
+	int				num_rows;
 	int				player_x;
 	int				player_y;
-	int				ratiox; // dyali ana omar
-	int				ratioy; //dyali ana omar
 	long			map_width;
 	long			map_height;
 	t_start			*head;
@@ -187,7 +185,7 @@ void			*ft_malloc(size_t size);
 void			ft_error(int x);
 // void	Parsing();
 void			raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
-t_map			*parsing(int ac, char **av);
+t_map			*parsing(char **av);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*get_next_line(int fd);
 char			**ft_split(char const *s, char c);

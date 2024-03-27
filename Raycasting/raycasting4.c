@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:57:48 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:41:57 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:53:29 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,12 @@ void	cast_vertical_ray(t_config *config, t_ray *ray)
 	double	yintercept;
 	double	xintercept;
 
-	xintercept = floor(config->player.x / (config->map->ratiox)) * \
-	(config->map->ratiox);
+	xintercept = floor(config->player.x / (TILE_SIZE)) * (TILE_SIZE);
 	if (ray->israyfright)
-		xintercept += (config->map->ratiox);
+		xintercept += (TILE_SIZE);
 	yintercept = config->player.y + (xintercept - config->player.x) * \
 	tan(ray->rayangle);
-	ray->xincv = config->map->ratiox;
+	ray->xincv = TILE_SIZE;
 	ray->yincv = ray->xincv * tan(ray->rayangle);
 	if (ray->israyfleft)
 		ray->xincv *= -1;
@@ -103,13 +102,12 @@ void	cast_horizontal_ray(t_config *config, t_ray *ray)
 	double	yintercept;
 	double	xintercept;
 
-	yintercept = floor(config->player.y / (config->map->ratioy)) * \
-	(config->map->ratioy);
+	yintercept = floor(config->player.y / (TILE_SIZE)) * (TILE_SIZE);
 	if (ray->israyfdown)
-		yintercept += config->map->ratioy;
+		yintercept += TILE_SIZE;
 	xintercept = config->player.x + (yintercept - config->player.y) / \
 	tan(ray->rayangle);
-	ray->yinch = config->map->ratioy;
+	ray->yinch = TILE_SIZE;
 	ray->xinch = ray->yinch / tan(ray->rayangle);
 	if (ray->israyfup)
 		ray->yinch *= -1;
