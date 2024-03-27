@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 06:07:10 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 14:08:32 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:37:39 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #  define BUFFER_SIZE 4
 # endif
 
+# include "../Cub3d.h"
 # include <stdlib.h>
 # include <unistd.h>
 

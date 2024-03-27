@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 15:09:34 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:15:41 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	*ft_malloc(size_t size)
 		perror("malloc fails\n");
 		exit(1);
 	}
+	ft_lstadd_back_clctr(ft_collector(), ft_lstnew_clctr(ptr));
 	return (ptr);
 }
 

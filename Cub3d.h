@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 15:35:29 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:17:05 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,12 @@ typedef struct s_point
 	int	j;
 }	t_point;
 
+typedef struct s_collector
+{
+	void				*ptr;
+	struct s_collector	*next;
+}			t_collector;
+
 // rayCasting:
 uint32_t		shift_color(uint32_t color);
 int				offsetx(t_ray ray, mlx_texture_t *texture);
@@ -220,5 +226,11 @@ int				count_table(char **str);
 void			ft_message(char *message, int x);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
+//collector ()
+
+t_collector		**ft_collector(void);
+void			ft_lstadd_back_clctr(t_collector **lst, t_collector *new);
+void			ft_free_collector(t_collector **lst);
+t_collector		*ft_lstnew_clctr(void *lst);
 
 #endif
