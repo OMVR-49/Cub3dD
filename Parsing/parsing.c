@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:36 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 23:39:49 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 23:56:16 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ t_map *parsing(int ac, char **av)
 			if(check_if_exist(head, str[0]) == 6)
 				break;
 			while (str[i])
-			{
-				printf("str[%d] = %s\n", i, str[i]);
 				i++;
-			}
 			if (i != 2)
 			{
 				printf("line %s i= %d\n", line, i);

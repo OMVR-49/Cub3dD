@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 00:29:34 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/25 22:18:16 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 23:50:51 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	if(!s)
+	if (!s)
 		return (0);
 	while (s[i])
 		i++;
