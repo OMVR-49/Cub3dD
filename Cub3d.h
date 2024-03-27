@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 22:47:56 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 05:11:30 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ typedef struct s_map
 	int				player_y;
 	int				ratiox; // dyali ana omar
 	int				ratioy; //dyali ana omar
+	long			map_width;
+	long			map_height;
 }			t_map;
 
 typedef struct s_ray

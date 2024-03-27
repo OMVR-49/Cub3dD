@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:55:52 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 21:07:53 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 05:15:55 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	is_wall(t_config *config, double x, double y)
 	int	mx;
 	int	my;
 
-	if (x <= 0 || x >= WIDTH || y <= 0 || y >= HEIGHT)
+	if (x < 0 || x >= config->map->map_width || y < 0 || y >= config->map->map_height)
 		return (1);
 	mx = floor(x / (config->map->ratiox));
 	my = floor(y / (config->map->ratioy));
