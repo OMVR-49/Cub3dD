@@ -6,7 +6,7 @@
 #    By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/27 07:02:23 by sacharai         ###   ########.fr        #
+#    Updated: 2024/03/27 10:47:21 by sacharai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRS_BNS =	./bonus/main_bonus.c ./bonus/Raycasting/raycasting1_bonus.c \
 			./bonus/Parsing/ft_split_bonus.c \
 			./bonus/Parsing/ft_atoi_bonus.c \
 
-CFLAGS =   -g3 #-Wall -Wextra -Werror
+CFLAGS =   -g3 -O3 #-Wall -Wextra -Werror 
 CC = cc
 NAME = cub3D
 NAME_BONUS = cub3D_bonus

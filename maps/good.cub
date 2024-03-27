@@ -1,13 +1,13 @@
-   WE                            textures/wolfenstein/eagle.xpm 
-NO      textures/wolfenstein/grey_stone.xpm
+   WE                            images/barrel.png
+NO      images/pillar.png
 
 
 
-SO textures/wolfenstein/red_brick.xpm
+SO images/wood.png
 
 F   69,222,199
 
-EA textures/wolfenstein/mossy.xpm
+EA images/eagle.png
 
 
 

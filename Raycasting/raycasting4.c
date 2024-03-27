@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:57:48 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 07:06:08 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 10:31:55 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,12 @@ void	find_closest_wall_hit(t_config *config, t_ray *ray)
 		ray->wallhitx = ray->wallhitxv;
 		ray->wallhity = ray->wallhityv;
 		ray->distance = ray->v_distance;
+		ray->wasvertical = true;
 	}
 	else
 	{
 		ray->wallhitx = ray->wallhitxh;
 		ray->wallhity = ray->wallhityh;
 		ray->distance = ray->h_distance;
-		ray->wasvertical = true;
 	}
 }

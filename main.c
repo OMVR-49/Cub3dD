@@ -6,28 +6,11 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 07:10:47 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:43:13 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
-
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
-
-void	ft_putstr_fd(char const *s, int fd)
-{
-	if (s != NULL)
-	{
-		while (*s != '\0')
-		{
-			write(fd, s, 1);
-			s++;
-		}
-	}
-}
 
 void	ft_error(int x)
 {
@@ -77,6 +60,25 @@ void	check_images(t_map *map)
 	}
 }
 
+void	fill_headers(t_map *map)
+{
+	t_start	*tmp;
+
+	tmp = map->head;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->key, "NO"))
+			map->no = tmp->value;
+		else if (!ft_strcmp(tmp->key, "SO"))
+			map->so = tmp->value;
+		else if (!ft_strcmp(tmp->key, "WE"))
+			map->we = tmp->value;
+		else if (!ft_strcmp(tmp->key, "EA"))
+			map->ea = tmp->value;
+		tmp = tmp->next;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	mlx_image_t	*img;
@@ -88,7 +90,8 @@ int	main(int ac, char **av)
 	if (ac == 2)
 	{
 		map = parsing(ac, av);
-		//check_images(map);
+		fill_headers(map);
+		check_images(map);
 		if (map)
 		{
 			mlx_set_setting(0, true);
