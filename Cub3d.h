@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:56:29 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:08:00 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_map
 	unsigned char	player_rotation_start; // 'N', 'S', 'E', 'W'
 	char			**grid;
 	uint32_t		f;
-	uint32_t		c; 
+	uint32_t		c;
 	int				num_cols;
 	int				num_rows;
 	int				player_x;
@@ -139,21 +139,21 @@ typedef struct s_point
 }	t_point;
 
 // rayCasting:
-uint32_t	shift_color(uint32_t color);
-int	offsetx(t_ray ray, mlx_texture_t *texture);
+uint32_t		shift_color(uint32_t color);
+int				offsetx(t_ray ray, mlx_texture_t *texture);
 mlx_texture_t	*set_texture(t_ray ray, t_config *config);
-double	step(uint32_t texture_height, double wallstripheight);
-void	draw_up(t_config *config, double wallstripheight, int j, \
-t_ray ray);
-void	draw_down(t_config *config, double wallstripheight, int j, \
-t_ray ray);
+double			step(uint32_t texture_height, double wallstripheight);
+void			draw_up(t_config *config, double wallstripheight, int j, \
+					t_ray ray);
+void			draw_down(t_config *config, double wallstripheight, int j, \
+					t_ray ray);
 mlx_texture_t	*set_texture(t_ray ray, t_config *config);
 void			initialize(t_config *config, t_map **map, mlx_t *mlx, \
-mlx_image_t *img);
+					mlx_image_t *img);
 void			update(t_config *config);
 void			hook(void *param);
 void			grid(t_config *config, int tileX, \
-int tileY, uint32_t tileColor);
+					int tileY, uint32_t tileColor);
 void			setup_map(t_config *config);
 void			setup_player(t_config *config);
 void			setup_fov(t_config *config);
@@ -161,13 +161,13 @@ void			setup_wall(t_config *config);
 void			cast_ray(t_config *config, int stripId, double rayangle);
 void			cast_all_rays(t_config *config);
 void			wall3d(t_config *config, double wallstripheight, \
-int j, t_ray ray);
+					int j, t_ray ray);
 void			ceil2dfloor1d(t_config *config, int i);
 void			whileforvert(t_config *config, t_ray *ray, double nvtx, \
-double nvty);
+					double nvty);
 void			cast_vertical_ray(t_config *config, t_ray *ray);
 void			whileforhorz(t_config *config, t_ray *ray, \
-double nextHorzTouchX, double nextHorzTouchY);
+					double nextHorzTouchX, double nextHorzTouchY);
 void			cast_horizontal_ray(t_config *config, t_ray *ray);
 void			find_closest_wall_hit(t_config *config, t_ray *ray);
 int				key_pressed(t_config *config);
@@ -176,9 +176,9 @@ void			update_player_pos(t_config *config);
 
 // tools :
 int				draw_line(t_config *config, double endX, double endY, \
-uint32_t color);
-double			distance_between_points(double x1, \
-double y1, double x2, double y2);
+					uint32_t color);
+double			distance_between_points(double x1, double y1, double x2, \
+					double y2);
 double			normalize_angle(double angle);
 void			*ft_malloc(size_t size);
 

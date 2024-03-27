@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:40:13 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 13:58:03 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:05:09 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_ply	*check_map_valid_char(char **map)
 int	calculate_max_size_line(char **map)
 {
 	size_t	max_size_line;
-	int	i;
+	int		i;
 
 	i = 0;
 	max_size_line = 0;
@@ -80,7 +80,7 @@ int	calculate_max_size_line(char **map)
 char	**create_helpmap(char **map, int max_size_line, int num_rows)
 {
 	char	**helpmap;
-	int	k;
+	int		k;
 	int		j;
 
 	j = 0;
