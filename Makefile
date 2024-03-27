@@ -6,7 +6,7 @@
 #    By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/27 14:02:37 by ojebbari         ###   ########.fr        #
+#    Updated: 2024/03/27 14:03:28 by ojebbari         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC =	main.c  Raycasting/raycasting1.c Raycasting/raycasting2.c \
 				Parsing/insert_node.c \
 				tools1.c \
 
-CFLAGS = -O3 #-Wall -Wextra -Werror 
+CFLAGS = -O3 -Wall -Wextra -Werror 
 CC = cc
 NAME = cub3D
 RM = rm -fr
