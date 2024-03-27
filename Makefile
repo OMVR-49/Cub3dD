@@ -6,7 +6,7 @@
 #    By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/27 20:16:30 by sacharai         ###   ########.fr        #
+#    Updated: 2024/03/27 22:09:36 by sacharai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRC =	main.c  Raycasting/raycasting1.c Raycasting/raycasting2.c \
 				Parsing/parsing_help4.c \
 				Parsing/insert_node.c \
 				tools1.c \
-				ft_grbg.c
+				ft_grbg.c \
+				delete_txt.c 
 
 CFLAGS = -O3 -Wall -Wextra -Werror 
 CC = cc

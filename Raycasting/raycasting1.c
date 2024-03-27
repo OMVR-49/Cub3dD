@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 20:50:50 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:24:39 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	cast_all_rays(t_config *config)
 	}
 }
 
-void	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
+t_config	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 {
 	t_config	config;
 
@@ -88,7 +88,6 @@ void	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
 	setup_fov(&config);
 	setup_wall(&config);
 	mlx_loop_hook(config.mlx, &hook, &config);
-	printf("t-config = %lu\n", sizeof(t_config));
-	printf("rays = %lu\n", sizeof(t_ray));
 	mlx_loop(mlx);
+	return (config);
 }

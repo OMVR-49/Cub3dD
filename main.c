@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 21:01:10 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:23:02 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,15 @@ void	fill_headers(t_map *map)
 			map->ea = tmp->value;
 		tmp = tmp->next;
 	}
+	check_images(map);
+}
+
+void	init_text(t_config *test)
+{
+	test->texture_no = NULL;
+	test->texture_so = NULL;
+	test->texture_we = NULL;
+	test->texture_ea = NULL;
 }
 
 int	main(int ac, char **av)
@@ -84,26 +93,26 @@ int	main(int ac, char **av)
 	mlx_image_t	*img;
 	t_map		*map;
 	mlx_t		*mlx;
+	t_config	test;
 
 	map = NULL;
 	mlx = NULL;
+	init_text(&test);
 	if (WIDTH < 200 || HEIGHT < 200 || WIDTH > 600 || HEIGHT > 600)
 		return (0);
 	if (ac == 2)
 	{
 		map = parsing(av);
 		fill_headers(map);
-		check_images(map);
 		if (map)
 		{
 			mlx_set_setting(0, false);
 			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", false);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
-			raycasting(map, mlx, img);
+			test = raycasting(map, mlx, img);
 		}
 	}
 	else
 		ft_error(1);
-	mlx_terminate(mlx);
-	return (0);
+	return (delete_txt(test, mlx), 0);
 }

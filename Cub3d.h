@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 20:17:05 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:11:15 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,9 @@ typedef struct s_ray
 
 	float	h_distance;
 	float	v_distance;
+
+	float	step;
+
 }			t_ray;
 
 typedef struct s_config
@@ -194,7 +197,8 @@ void			*ft_malloc(size_t size);
 
 void			ft_error(int x);
 // void	Parsing();
-void			raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
+t_config	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
+// void			raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
 t_map			*parsing(char **av);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*get_next_line(int fd);
@@ -226,6 +230,7 @@ int				count_table(char **str);
 void			ft_message(char *message, int x);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
+void			delete_txt(t_config test, mlx_t *mlx);
 //collector ()
 
 t_collector		**ft_collector(void);
