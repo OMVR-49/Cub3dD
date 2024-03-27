@@ -6,35 +6,36 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/25 23:01:24 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:44:52 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
 
-int draw_line(t_config *config, double endX, double endY, uint32_t color)
+int	draw_line(t_config *config, double endX, double endY, uint32_t color)
 {
-	double deltaX;
-	double deltaY;
-	double pixelX;
-	double pixelY;
-	double pixels ;
+	double	deltax;
+	double	deltay;
+	double	pixelx;
+	double	pixely;
+	double	pixels;
 
-	deltaX = endX - config->player.x;
-	deltaY = endY - config->player.y;
-	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	deltaX /= pixels;
-	deltaY /= pixels; 
-	pixelX = config->player.x;
-	pixelY = config->player.y;
+	deltax = endX - config->player.x;
+	deltay = endY - config->player.y;
+	pixels = sqrt((deltax * deltax) + (deltay * deltay));
+	deltax /= pixels;
+	deltay /= pixels;
+	pixelx = config->player.x;
+	pixely = config->player.y;
 	while (pixels > 0)
 	{
-		mlx_put_pixel(config->img, pixelX, pixelY,  color);
-		pixelX += deltaX;
-		pixelY += deltaY;
+		mlx_put_pixel(config->img, pixelx * MAP_SCALE, pixely * MAP_SCALE,
+			color);
+		pixelx += deltax;
+		pixely += deltay;
 		--pixels;
 	}
-	return 1;
+	return (1);
 }
 
 void	*ft_malloc(size_t size)
@@ -50,11 +51,17 @@ void	*ft_malloc(size_t size)
 	return (ptr);
 }
 
-int get_rgba(int r, int g, int b, int a)
+double	distance_between_points(double x, double y, double a, double b)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	return (sqrt((a - x) * (a - x) + (b - y) * (b - y)));
 }
-void set_rgba(int color)
+
+double	normalize_angle(double angle)
 {
-	
+	angle = fmod(angle, 2 * M_PI);
+	if (angle < 0)
+		angle = (2 * M_PI) + angle;
+	else if (angle > (2 * M_PI))
+		angle = angle - (2 * M_PI);
+	return (angle);
 }

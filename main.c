@@ -6,95 +6,98 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 03:11:25 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:32:27 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
 
-int ft_error(int x)
+void	ft_error(int x)
 {
 	if (x == 1)
-		perror("Invalid Argumentss");
+		ft_message("Wrong number of arguments", 1);
 	else if (x == 2)
-		perror("");
+		ft_message("Wrong file extension", 2);
 	else if (x == 3)
-		perror("");
-	exit(x);
+		ft_message("File not found", 3);
+	else if (x == 4)
+		ft_message("Wrong number of arguments", 4);
+	else if (x == 5)
+		ft_message("missing key", 5);
+	else if (x == 6)
+		ft_message("multiple player", 6);
+	else if (x == 7)
+		ft_message("invalid char in map", 7);
+	else if (x == 8)
+		ft_message("invalid color", 8);
+	else if (x == 9)
+		ft_message("no player", 9);
+	else if (x == 10)
+		ft_message("invalid map", 10);
+	else if (x == 11)
+		ft_message("no map", 11);
+	else if (x == 15)
+		ft_message("empty line in the middle of the map", 15);
 }
 
-void	test(t_map **map)
+void	check_images(t_map *map)
 {
-	int i = 0;
-	(*map) = ft_malloc(sizeof(t_map));
-	(*map)->grid = ft_malloc(27 * sizeof(char *));
-	while (i < 27)
+	t_start	*tmp;
+	int		fd;
+
+	tmp = map->head;
+	while (tmp)
 	{
-		(*map)->grid[i] = ft_malloc(29 * sizeof(char));
-		i++;
+		if (ft_strcmp(tmp->key, "F") != 0 && ft_strcmp(tmp->key, "C") != 0)
+		{
+			fd = open(tmp->value, O_RDONLY);
+			if (fd == -1)
+				ft_error(3);
+			else
+				close(fd);
+		}
+		tmp = tmp->next;
 	}
-	(*map)->grid[0] = "11111111111111111111111111111";
-	(*map)->grid[1] = "10000000000000000000000000001";
-	(*map)->grid[2] = "10000000000000000000000000001";
-	(*map)->grid[3] = "10000000000000000000000000001";
-	(*map)->grid[4] = "10000000000000000000000000001";
-	(*map)->grid[5] = "10000000000000000000000000001";
-	(*map)->grid[6] = "10000000000000000000000000001";
-	(*map)->grid[7] = "10000000000000000000000000001";
-	(*map)->grid[8] = "10000000000000000000000000001";
-	(*map)->grid[9] = "10000000000000010000000000001";
-	(*map)->grid[10] = "10000000000000000000000000001";
-	(*map)->grid[11] = "10000000000000000000000000001";
-	(*map)->grid[12] = "10000000000000000000000000001";
-	(*map)->grid[13] = "10000000000000000000000000001";
-	(*map)->grid[14] = "10000000000000000000000000001";
-	(*map)->grid[15] = "10000000000010000000000000001";
-	(*map)->grid[16] = "10000000000000000000000000001";
-	(*map)->grid[17] = "10000000000000000000000000001";
-	(*map)->grid[18] = "10000000000000000000000000001";
-	(*map)->grid[19] = "10000000000000000000000000001";
-	(*map)->grid[20] = "10000000000000000000000000001";
-	(*map)->grid[21] = "10000000000000000000000000001";
-	(*map)->grid[22] = "10000000000000000000000000001";
-	(*map)->grid[23] = "10000000000000000000000000001";
-	(*map)->grid[24] = "10000000000000000000000000001";
-	(*map)->grid[25] = "10000000000000000000000000001";
-	(*map)->grid[26] = "11111111111111111111111111111";
-	
-	(*map)->num_cols = 29;
-	(*map)->num_rows = 27;
-	(*map)->f = ft_malloc(4 * sizeof(int *));
-	(*map)->c = ft_malloc(4 * sizeof(int *));
-	(*map)->f[0] = 0;
-	(*map)->f[1] = 0;
-	(*map)->f[2] = 0;
-	(*map)->f[3] = 0;
-	(*map)->c[0] = 0;
-	(*map)->c[1] = 0;
-	(*map)->c[2] = 0;
-	(*map)->c[3] = 0;
-	(*map)->PlayerRotationStart = 'N';
-	(*map)->playerX = 11;
-	(*map)->playerY = 5;
-
-	
-
 }
-int main(int ac, char **av)
-{
-	t_map *map;
-	mlx_t *mlx;
-	mlx_image_t *img;
 
-	test(&map);
-	if (ac == 2) // 1 bach ntester bla parsing
+void	fill_headers(t_map *map)
+{
+	t_start	*tmp;
+
+	tmp = map->head;
+	while (tmp)
 	{
-		// map = parsing(ac, av);
+		if (!ft_strcmp(tmp->key, "NO"))
+			map->no = tmp->value;
+		else if (!ft_strcmp(tmp->key, "SO"))
+			map->so = tmp->value;
+		else if (!ft_strcmp(tmp->key, "WE"))
+			map->we = tmp->value;
+		else if (!ft_strcmp(tmp->key, "EA"))
+			map->ea = tmp->value;
+		tmp = tmp->next;
+	}
+}
+
+int	main(int ac, char **av)
+{
+	mlx_image_t	*img;
+	t_map		*map;
+	mlx_t		*mlx;
+
+	map = NULL;
+	mlx = NULL;
+	if (WIDTH < 200 || HEIGHT < 200 || WIDTH > 600 || HEIGHT > 600)
+		return (0);
+	if (ac == 2)
+	{
+		map = parsing(ac, av);
+		fill_headers(map);
+		check_images(map);
 		if (map)
 		{
-			mlx_set_setting(0, true);
-			if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
-				exit(EXIT_FAILURE);
+			mlx_set_setting(0, false);
+			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", false);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
 			raycasting(map, mlx, img);
 		}
