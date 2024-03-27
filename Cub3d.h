@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 05:11:30 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 05:40:48 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ double		distance_between_points(double x1, double y1, double x2, double y2);
 double		normalize_angle(double angle);
 void		*ft_malloc(size_t size);
 
-int			ft_error(int x);
+void		ft_error(int x);
 // void	Parsing();
 void		raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
 t_map		*parsing(int ac, char **av);
@@ -161,7 +161,22 @@ char		**ft_split(char const *s, char c);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strdup(const char *s);
 char		*ft_strtrim(char *s1, char *set);
+size_t		ft_strlcpy(char *dst, const char *src, size_t size);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_atoi(const char *str);
-
+char		*ft_strtrim(char *s1, char *set);
+int			check_if_exist(t_start *head, char *key);
+int			list_length(t_start *head);
+void		chack_spaces(char **map);
+int			check_number(char *str);
+int			len_char(char *str, char c);
+int			help_parse_color(char *str);
+int			*parse_color(t_start *head);
+t_start		*create_node(char *key, char *value);
+void		insert_node(t_start **head, char *key, char *value, int flag);
+t_ply		*check_map_valid_char(char **map);
+int			calculate_max_size_line(char **map);
+char		**create_helpmap(char **map, int max_size_line, int num_rows);
+char		**create_newmap(char **map, int max_size_line, int num_rows);
+t_map		*valid_map(char **map);
 #endif
