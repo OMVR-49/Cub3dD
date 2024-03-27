@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 23:47:40 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 07:10:47 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,6 @@ void	ft_putstr_fd(char const *s, int fd)
 			s++;
 		}
 	}
-}
-
-void	ft_message(char *message, int x)
-{
-	ft_putstr_fd("Error: ", 2);
-	ft_putstr_fd(message, 2);
-	ft_putchar_fd('\n', 2);
-	exit(x);
 }
 
 void	ft_error(int x)
@@ -65,6 +57,26 @@ void	ft_error(int x)
 		ft_message("empty line in the middle of the map", 15);
 }
 
+void	check_images(t_map *map)
+{
+	t_start	*tmp;
+	int		fd;
+
+	tmp = map->head;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, "F") != 0 && ft_strcmp(tmp->key, "C") != 0)
+		{
+			fd = open(tmp->value, O_RDONLY);
+			if (fd == -1)
+				ft_error(3);
+			else
+				close(fd);
+		}
+		tmp = tmp->next;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	mlx_image_t	*img;
@@ -76,6 +88,7 @@ int	main(int ac, char **av)
 	if (ac == 2)
 	{
 		map = parsing(ac, av);
+		//check_images(map);
 		if (map)
 		{
 			mlx_set_setting(0, true);

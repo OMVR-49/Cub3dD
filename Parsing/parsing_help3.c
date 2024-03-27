@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:40:13 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/26 22:57:11 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 07:08:13 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,15 @@ void	validate_map_chars(char **map, int i, int j)
 		ft_error(7);
 }
 
-t_ply	*player_position(char **map, int *p_find, t_ply *player, int i, int j)
+t_ply	*player_position(char **map, int *p_find, t_ply *player, t_point *p)
 {
-	if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W'
-		|| map[i][j] == 'E')
+	if (map[p->i][p->j] == 'N'
+		|| map[p->i][p->j] == 'S' || map[p->i][p->j] == 'W'
+		|| map[p->i][p->j] == 'E')
 	{
-		player->x = i;
-		player->y = j;
-		player->direction = map[i][j];
+		player->x = p->i;
+		player->y = p->j;
+		player->direction = map[p->i][p->j];
 		if (*p_find == 1)
 			ft_error(6);
 		*p_find = 1;
@@ -37,24 +38,23 @@ t_ply	*player_position(char **map, int *p_find, t_ply *player, int i, int j)
 
 t_ply	*check_map_valid_char(char **map)
 {
-	int		i;
-	int		j;
+	t_point	p;
 	int		p_find;
 	t_ply	*player;
 
-	player = malloc(sizeof(t_ply));
-	i = 0;
+	player = ft_malloc(sizeof(t_ply));
+	p.i = 0;
 	p_find = 0;
-	while (map[i])
+	while (map[p.i])
 	{
-		j = 0;
-		while (map[i][j])
+		p.j = 0;
+		while (map[p.i][p.j])
 		{
-			validate_map_chars(map, i, j);
-			player = player_position(map, &p_find, player, i, j);
-			j++;
+			validate_map_chars(map, p.i, p.j);
+			player = player_position(map, &p_find, player, &p);
+			p.j++;
 		}
-		i++;
+		p.i++;
 	}
 	if (p_find == 0)
 		ft_error(9);
@@ -84,11 +84,11 @@ char	**create_helpmap(char **map, int max_size_line, int num_rows)
 	int		k;
 
 	j = 0;
-	helpmap = malloc(sizeof(char *) * (num_rows + 1));
+	helpmap = ft_malloc(sizeof(char *) * (num_rows + 1));
 	while (j < num_rows)
 	{
 		k = 0;
-		helpmap[j] = malloc(sizeof(char) * (max_size_line + 1));
+		helpmap[j] = ft_malloc(sizeof(char) * (max_size_line + 1));
 		while (k < max_size_line)
 		{
 			if (k >= ft_strlen(map[j]))

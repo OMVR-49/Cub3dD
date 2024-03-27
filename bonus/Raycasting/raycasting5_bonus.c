@@ -1,47 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting3.c                                      :+:      :+:    :+:   */
+/*   raycasting5_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/26 09:55:52 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 07:05:38 by sacharai         ###   ########.fr       */
+/*   Created: 2024/03/26 09:58:59 by ojebbari          #+#    #+#             */
+/*   Updated: 2024/03/26 23:09:55 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Cub3d.h"
-
-void	cast_ray(t_config *config, int stripId, double rayangle)
-{
-	t_ray	*ray;
-
-	ray = &config->rays[stripId];
-	ray->rayangle = normalize_angle(rayangle);
-	ray->israyfdown = (ray->rayangle > 0 && ray->rayangle < M_PI);
-	ray->israyfup = !ray->israyfdown;
-	ray->israyfleft = (ray->rayangle > M_PI_2 && ray->rayangle < 3 * \
-			M_PI_2);
-	ray->israyfright = !ray->israyfleft;
-	ray->foundhithorizontal = false;
-	ray->foundhitvertical = false;
-	ray->wallhitxh = 0;
-	ray->wallhityh = 0;
-	ray->wallhitxv = 0;
-	ray->wallhityv = 0;
-	ray->wallhitx = 0;
-	ray->wallhity = 0;
-	ray->distance = 0;
-	ray->wasvertical = false;
-	cast_horizontal_ray(config, ray);
-	cast_vertical_ray(config, ray);
-	find_closest_wall_hit(config, ray);
-}
-
-void	setup_fov(t_config *config)
-{
-	cast_all_rays(config);
-}
+#include "../Cub3d_bonus.h"
 
 int	key_pressed(t_config *config)
 {
@@ -70,7 +39,7 @@ int	is_wall(t_config *config, double x, double y)
 	int	mx;
 	int	my;
 
-	if (x < 0 || x >= config->map->map_width || y < 0 || y >= config->map->map_height)
+	if (x <= 0 || x >= WIDTH || y <= 0 || y >= HEIGHT)
 		return (1);
 	mx = floor(x / (config->map->ratiox));
 	my = floor(y / (config->map->ratioy));
@@ -100,6 +69,9 @@ void	update_player_pos(t_config *config)
 	config->player.movement_speed;
 	newplayer_x += cos(config->player.rotation_angle + M_PI_2) * strafestep;
 	newplayer_y += sin(config->player.rotation_angle + M_PI_2) * strafestep;
-	config->player.x = newplayer_x;
-	config->player.y = newplayer_y;
+	if (!is_wall(config, newplayer_x, newplayer_y))
+	{
+		config->player.x = newplayer_x;
+		config->player.y = newplayer_y;
+	}
 }

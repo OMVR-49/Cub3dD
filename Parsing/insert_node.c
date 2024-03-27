@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:26:01 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/26 23:05:40 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 07:09:05 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_start	*create_node(char *key, char *value)
 {
 	t_start	*node;
 
-	node = malloc(sizeof(t_start));
+	node = ft_malloc(sizeof(t_start));
 	node->key = key;
 	node->value = value;
 	node->flag = 0;
@@ -25,6 +25,15 @@ t_start	*create_node(char *key, char *value)
 	return (node);
 }
 
+int	count_table(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 void	validate_key(char *key, int flag)
 {
@@ -47,6 +56,8 @@ void	validate_key(char *key, int flag)
 		if (flag == 0)
 			ft_error(5);
 	}
+	else
+		ft_free(table, count_table(table));
 }
 
 void	insert_node(t_start **head, char *key, char *value, int flag)
@@ -55,7 +66,6 @@ void	insert_node(t_start **head, char *key, char *value, int flag)
 	t_start	*tmp;
 
 	validate_key(key, flag);
-
 	tmp = *head;
 	new_node = create_node(key, value);
 	if (!*head)

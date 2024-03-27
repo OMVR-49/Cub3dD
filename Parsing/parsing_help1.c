@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 20:56:50 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/26 23:29:09 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 07:07:31 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_strtrim(char *s1, char *set)
 			return (ft_strdup(""));
 		while (s1[ls1 - 1] && ft_strchr(set, s1[ls1 - 1]) != 0 && ls1 > i)
 			ls1--;
-		str = (char *)malloc(sizeof(char) * (ls1 - i + 1));
+		str = (char *)ft_malloc(sizeof(char) * (ls1 - i + 1));
 		if (!str)
 			return (NULL);
 		if (str)

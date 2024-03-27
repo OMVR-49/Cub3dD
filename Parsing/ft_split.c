@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 01:28:08 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/26 20:56:11 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 07:06:58 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	ft_size_word(char const *s, char c, int i)
 	return (size);
 }
 
-static void	ft_free(char **strs, int j)
+void	ft_free(char **strs, int j)
 {
 	while (j-- > 0)
 	{

@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting4.c                                      :+:      :+:    :+:   */
+/*   raycasting4_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:57:48 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 07:06:08 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/26 20:54:50 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Cub3d.h"
+#include "../Cub3d_bonus.h"
 
 void	whileforvert(t_config *config, t_ray *ray, double nvtx, double nvty)
 {
 	double	xtocheck;
 	double	ytocheck;
 
-	ray->wallhitxv = nvtx;
-	ray->wallhityv = nvty;
-	while (nvtx >= 0 && nvtx < config->map->map_width && nvty >= 0 && nvty < config->map->map_height)
+	while (nvtx >= 0 && nvtx <= WIDTH && nvty >= 0 && nvty <= HEIGHT)
 	{
 		if (ray->israyfleft)
 			xtocheck = nvtx - 1;
@@ -57,9 +55,9 @@ void	cast_vertical_ray(t_config *config, t_ray *ray)
 	yintercept = config->player.y + (xintercept - config->player.x) * \
 	tan(ray->rayangle);
 	ray->xincv = config->map->ratiox;
-	ray->yincv = ray->xincv * tan(ray->rayangle);
 	if (ray->israyfleft)
 		ray->xincv *= -1;
+	ray->yincv = ray->xincv * tan(ray->rayangle);
 	if (ray->israyfup && ray->yincv > 0)
 		ray->yincv *= -1;
 	if (ray->israyfdown && ray->yincv < 0)
@@ -74,9 +72,7 @@ void	whileforhorz(t_config *config, t_ray *ray, double nhtx, double nhty)
 	double	xtocheck;
 	double	ytocheck;
 
-	ray->wallhitxh = nhtx;
-	ray->wallhityh = nhty;
-	while (nhtx >= 0 && nhtx < config->map->map_width && nhty >= 0 && nhty < config->map->map_height)
+	while (nhtx >= 0 && nhtx <= WIDTH && nhty >= 0 && nhty <= HEIGHT)
 	{
 		xtocheck = nhtx;
 		if (ray->israyfup)
@@ -112,9 +108,9 @@ void	cast_horizontal_ray(t_config *config, t_ray *ray)
 	xintercept = config->player.x + (yintercept - config->player.y) / \
 	tan(ray->rayangle);
 	ray->yinch = config->map->ratioy;
-	ray->xinch = ray->yinch / tan(ray->rayangle);
 	if (ray->israyfup)
 		ray->yinch *= -1;
+	ray->xinch = ray->yinch / tan(ray->rayangle);
 	if (ray->israyfleft && ray->xinch > 0)
 		ray->xinch *= -1;
 	if (ray->israyfright && ray->xinch < 0)

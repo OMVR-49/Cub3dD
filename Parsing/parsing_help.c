@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:56:04 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/26 21:05:42 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 07:07:23 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_strdup(const char *s)
 	int		i;
 
 	i = 0;
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	str = (char *)ft_malloc(sizeof(char) * (ft_strlen(s) + 1));
 	if (!str)
 		return (NULL);
 	while (s[i])
@@ -73,9 +73,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (start >= lens)
 		return (ft_strdup(""));
 	if ((lens - start) < len)
-		str = malloc(sizeof(char) * ((lens - start) + 1));
+		str = ft_malloc(sizeof(char) * ((lens - start) + 1));
 	else
-		str = malloc(sizeof(char) * (len + 1));
+		str = ft_malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
 	while (i < len && s[start])
