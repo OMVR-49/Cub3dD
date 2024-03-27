@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   tools_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 10:44:52 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/26 20:55:12 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Cub3d.h"
+#include "Cub3d_bonus.h"
 
 int	draw_line(t_config *config, double endX, double endY, uint32_t color)
 {
