@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 11:43:57 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:34:50 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define PI 3.141592653589793238
 # define TILE_SIZE  32
-# define HEIGHT  700
-# define WIDTH  700
+# define HEIGHT  500
+# define WIDTH  500
 # define WALL_WIDTH 1
 # define NUM_RAYS WIDTH
 # define MAP_SCALE 0.2
@@ -141,6 +141,14 @@ typedef struct s_point
 }	t_point;
 
 // rayCasting:
+uint32_t	shift_color(uint32_t color);
+int	offsetx(t_ray ray, mlx_texture_t *texture);
+mlx_texture_t	*set_texture(t_ray ray, t_config *config);
+double	step(uint32_t texture_height, double wallstripheight);
+void	draw_up(t_config *config, double wallstripheight, int j, \
+t_ray ray);
+void	draw_down(t_config *config, double wallstripheight, int j, \
+t_ray ray);
 mlx_texture_t	*set_texture(t_ray ray, t_config *config);
 void			initialize(t_config *config, t_map **map, mlx_t *mlx, \
 mlx_image_t *img);

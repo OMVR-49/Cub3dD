@@ -1,10 +1,13 @@
-NO textures/simonkraft/wet_sponge.xpm
-SO textures/simonkraft/wet_sponge.xpm
-WE textures/simonkraft/wet_sponge.xpm
-EA textures/simonkraft/wet_sponge.xpm
+EA images/eagle.png
+   WE                            images/barrel.png
+NO      images/pillar.png
 
-F 10,69,20
-C 53,120,100
+
+
+SO images/wood.png
+
+C  90,12,20
+F  70,190,54
 
 111111111111111111111
 101000001000000000001

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 11:43:13 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:32:27 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int	main(int ac, char **av)
 
 	map = NULL;
 	mlx = NULL;
+	if (WIDTH < 200 || HEIGHT < 200 || WIDTH > 600 || HEIGHT > 600)
+		return (0);
 	if (ac == 2)
 	{
 		map = parsing(ac, av);
@@ -94,8 +96,8 @@ int	main(int ac, char **av)
 		check_images(map);
 		if (map)
 		{
-			mlx_set_setting(0, true);
-			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
+			mlx_set_setting(0, false);
+			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", false);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
 			raycasting(map, mlx, img);
 		}

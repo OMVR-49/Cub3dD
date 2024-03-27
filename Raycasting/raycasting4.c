@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:57:48 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 10:31:55 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:41:57 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,13 @@ void	whileforvert(t_config *config, t_ray *ray, double nvtx, double nvty)
 
 	ray->wallhitxv = nvtx;
 	ray->wallhityv = nvty;
-	while (nvtx >= 0 && nvtx < config->map->map_width && nvty >= 0 && nvty < config->map->map_height)
+	while (nvtx >= 0 && nvtx < config->map->map_width && \
+	nvty >= 0 && nvty < config->map->map_height)
 	{
+		xtocheck = nvtx;
 		if (ray->israyfleft)
 			xtocheck = nvtx - 1;
-		else
-			xtocheck = nvtx;
 		ytocheck = nvty;
-		if (ray->israyfleft)
-			xtocheck--;
 		if (is_wall(config, xtocheck, ytocheck))
 		{
 			ray->foundhitvertical = true;
@@ -76,13 +74,13 @@ void	whileforhorz(t_config *config, t_ray *ray, double nhtx, double nhty)
 
 	ray->wallhitxh = nhtx;
 	ray->wallhityh = nhty;
-	while (nhtx >= 0 && nhtx < config->map->map_width && nhty >= 0 && nhty < config->map->map_height)
+	while (nhtx >= 0 && nhtx < config->map->map_width && nhty >= 0 && \
+	nhty < config->map->map_height)
 	{
 		xtocheck = nhtx;
+		ytocheck = nhty;
 		if (ray->israyfup)
 			ytocheck = nhty - 1;
-		else
-			ytocheck = nhty;
 		if (is_wall(config, xtocheck, ytocheck))
 		{
 			ray->foundhithorizontal = true;

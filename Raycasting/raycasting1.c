@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 11:30:08 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:22:27 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 		(config->map->ratioy / 2);
 	config->player.turn_direction = 0;
 	config->player.walk_direction = 0;
+	config->player.strafe_direction = 0;
 	config->player.rotation_angle = 0;
 	if (config->map->player_rotation_start == 'N')
 		config->player.rotation_angle = 1.5 * M_PI;
@@ -34,8 +35,7 @@ void	initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 		config->player.rotation_angle = 0.5 * M_PI;
 	else if (config->map->player_rotation_start == 'W')
 		config->player.rotation_angle = M_PI;
-	config->player.strafe_direction = 0;
-	config->player.movement_speed = 6;
+	config->player.movement_speed = 5;
 	config->player.rotation_speed = 5 * (M_PI / 180);
 	config->player.fov_angle = 60 * (M_PI / 180);
 	config->player.dpp = (WIDTH / 2) / tan(config->player.fov_angle / 2);
@@ -43,7 +43,6 @@ void	initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 
 void	update(t_config *config)
 {
-	config->img = mlx_new_image(config->mlx, WIDTH, HEIGHT);
 	update_player_pos(config);
 	setup_wall(config);
 	setup_fov(config);
@@ -58,6 +57,7 @@ void	hook(void *param)
 	if (key_pressed(config))
 	{
 		mlx_delete_image(config->mlx, config->img);
+		config->img = mlx_new_image(config->mlx, WIDTH, HEIGHT);
 		update(config);
 		config->player.turn_direction = 0;
 		config->player.walk_direction = 0;

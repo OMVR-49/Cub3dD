@@ -1,8 +1,10 @@
-NO texture/rock.xpm
-SO texture/wall.xpm
-WE texture/wood.xpm
-EA texture/q.xpm
+EA images/eagle.png
+   WE                            images/barrel.png
+NO      images/pillar.png
 
+
+
+SO images/wood.png
 
 C  90,12,20
 F  70,190,54

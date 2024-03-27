@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:55:52 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 07:05:38 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:44:18 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int	is_wall(t_config *config, double x, double y)
 	int	mx;
 	int	my;
 
-	if (x < 0 || x >= config->map->map_width || y < 0 || y >= config->map->map_height)
+	if (x < 0 || x >= config->map->map_width || y < 0 || \
+	y >= config->map->map_height)
 		return (1);
 	mx = floor(x / (config->map->ratiox));
 	my = floor(y / (config->map->ratioy));
@@ -100,6 +101,9 @@ void	update_player_pos(t_config *config)
 	config->player.movement_speed;
 	newplayer_x += cos(config->player.rotation_angle + M_PI_2) * strafestep;
 	newplayer_y += sin(config->player.rotation_angle + M_PI_2) * strafestep;
-	config->player.x = newplayer_x;
-	config->player.y = newplayer_y;
+	if (!is_wall(config, newplayer_x, newplayer_y))
+	{
+		config->player.x = newplayer_x;
+		config->player.y = newplayer_y;
+	}
 }

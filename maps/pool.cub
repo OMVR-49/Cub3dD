@@ -1,10 +1,13 @@
-NO textures/water.xpm
-SO textures/water.xpm
-WE textures/tiles.xpm
-EA textures/tiles.xpm
+EA images/eagle.png
+   WE                            images/barrel.png
+NO      images/pillar.png
 
-F 46,47,48
-C 50,20,20
+
+
+SO images/wood.png
+
+C  90,12,20
+F  70,190,54
 
 11111111111111111111111111111
 10000000001100000000000000001
