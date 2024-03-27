@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:51:09 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:12:50 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:30:55 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@ uint32_t	shift_color(uint32_t color)
 mlx_texture_t	*set_texture(t_ray ray, t_config *config)
 {
 	if (ray.wasvertical && ray.israyfleft)
-		return (mlx_load_png(config->map->we));
+		return (config->texture_we);
 	else if (ray.wasvertical && ray.israyfright)
-		return (mlx_load_png(config->map->ea));
+		return (config->texture_ea);
 	else if (!ray.wasvertical && ray.israyfup)
-		return (mlx_load_png(config->map->no));
+		return (config->texture_no);
 	else
-		return (mlx_load_png(config->map->so));
+		return (config->texture_so);
 }
 
-double	step(uint32_t texture_height, double wallstripheight)
+float	step(uint32_t texture_height, float wallstripheight)
 {
 	return (texture_height / wallstripheight);
 }

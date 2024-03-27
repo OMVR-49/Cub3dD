@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 22:05:45 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 14:34:45 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:35:01 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	calculate_rgb(char **tmprgb)
 {
 	int	rgb;
 
-	rgb = ft_atoi(tmprgb[0]) << 24 | ft_atoi(tmprgb[1]) << 16 | ft_atoi(tmprgb[2]) << 8 | 255;
+	rgb = ft_atoi(tmprgb[0]) << 24 | ft_atoi(tmprgb[1]) << 16 | \
+	ft_atoi(tmprgb[2]) << 8 | 255;
 	return (rgb);
 }

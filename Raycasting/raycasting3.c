@@ -6,13 +6,13 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 09:55:52 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:49:34 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:09:34 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-void	cast_ray(t_config *config, int stripId, double rayangle)
+void	cast_ray(t_config *config, int stripId, float rayangle)
 {
 	t_ray	*ray;
 
@@ -65,7 +65,7 @@ int	key_pressed(t_config *config)
 	return (i);
 }
 
-int	is_wall(t_config *config, double x, double y)
+int	is_wall(t_config *config, float x, float y)
 {
 	int	mx;
 	int	my;
@@ -85,10 +85,10 @@ int	is_wall(t_config *config, double x, double y)
 
 void	update_player_pos(t_config *config)
 {
-	double	move_step;
-	double	newplayer_x;
-	double	newplayer_y;
-	double	strafestep;
+	float	move_step;
+	float	newplayer_x;
+	float	newplayer_y;
+	float	strafestep;
 
 	config->player.rotation_angle += config->player.turn_direction * \
 	config->player.rotation_speed;

@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 00:35:41 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:51:29 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:33:39 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ void	initialize(t_config *config, t_map **map, mlx_t *mlx, mlx_image_t *img)
 		config->player.rotation_angle = 0.5 * M_PI;
 	else if (config->map->player_rotation_start == 'W')
 		config->player.rotation_angle = M_PI;
-	config->player.movement_speed = 5;
-	config->player.rotation_speed = 5 * (M_PI / 180);
+	config->player.movement_speed = 2;
+	config->player.rotation_speed = 2 * (M_PI / 180);
 	config->player.fov_angle = 60 * (M_PI / 180);
 	config->player.dpp = (WIDTH / 2) / tan(config->player.fov_angle / 2);
+	config->texture_no = mlx_load_png(config->map->no);
+	config->texture_so = mlx_load_png(config->map->so);
+	config->texture_we = mlx_load_png(config->map->we);
+	config->texture_ea = mlx_load_png(config->map->ea);
 }
 
 void	update(t_config *config)
@@ -61,21 +65,9 @@ void	hook(void *param)
 	}
 }
 
-void	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
-{
-	t_config	*config;
-
-	config = ft_malloc(sizeof (t_config));
-	initialize(config, &map, mlx, img);
-	setup_fov(config);
-	setup_wall(config);
-	mlx_loop_hook(config->mlx, &hook, config);
-	mlx_loop(mlx);
-}
-
 void	cast_all_rays(t_config *config)
 {
-	double	rayangle;
+	float	rayangle;
 	int		stripid;
 
 	stripid = 0;
@@ -86,4 +78,17 @@ void	cast_all_rays(t_config *config)
 		rayangle += config->player.fov_angle / NUM_RAYS;
 		stripid++;
 	}
+}
+
+void	raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img)
+{
+	t_config	config;
+
+	initialize(&config, &map, mlx, img);
+	setup_fov(&config);
+	setup_wall(&config);
+	mlx_loop_hook(config.mlx, &hook, &config);
+	printf("t-config = %lu\n", sizeof(t_config));
+	printf("rays = %lu\n", sizeof(t_ray));
+	mlx_loop(mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 14:08:00 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:35:29 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ typedef struct s_ply
 
 typedef struct s_player
 {
-	double	strafe_direction;
-	double	turn_direction;
-	double	walk_direction;
-	double	rotation_angle;
-	double	movement_speed;
-	double	rotation_speed;
-	double	fov_angle;
-	double	dpp;
-	double	x;
-	double	y;
+	float	strafe_direction;
+	float	turn_direction;
+	float	walk_direction;
+	float	rotation_angle;
+	float	movement_speed;
+	float	rotation_speed;
+	float	fov_angle;
+	float	dpp;
+	float	x;
+	float	y;
 }				t_player;
 
 typedef struct s_start
@@ -84,41 +84,45 @@ typedef struct s_ray
 {
 	int		foundhithorizontal;
 	int		foundhitvertical;
-	double	wallhitxh;
-	double	wallhityh;
-	double	wallhitxv;
-	double	wallhityv;
+	float	wallhitxh;
+	float	wallhityh;
+	float	wallhitxv;
+	float	wallhityv;
 
-	double	rayangle;
-	double	distance;
+	float	rayangle;
+	float	distance;
 
-	double	wallhitx;
-	double	wallhity;
-	double	xinch;
-	double	yinch;
-	double	xincv;
-	double	yincv;
+	float	wallhitx;
+	float	wallhity;
+	float	xinch;
+	float	yinch;
+	float	xincv;
+	float	yincv;
 
 	bool	wasvertical;
 
-	double	israyfdown;
-	double	israyfup;
-	double	israyfright;
-	double	israyfleft;
+	float	israyfdown;
+	float	israyfup;
+	float	israyfright;
+	float	israyfleft;
 
-	double	wallstripheight;
+	float	wallstripheight;
 
-	double	h_distance;
-	double	v_distance;
+	float	h_distance;
+	float	v_distance;
 }			t_ray;
 
 typedef struct s_config
 {
-	t_ray		rays[NUM_RAYS];
-	mlx_image_t	*img;
-	t_player	player;
-	mlx_t		*mlx;
-	t_map		*map;
+	mlx_texture_t	*texture_no;
+	mlx_texture_t	*texture_so;
+	mlx_texture_t	*texture_we;
+	mlx_texture_t	*texture_ea;
+	t_ray			rays[NUM_RAYS];
+	mlx_image_t		*img;
+	t_player		player;
+	mlx_t			*mlx;
+	t_map			*map;
 }				t_config;
 
 typedef struct s_type
@@ -142,10 +146,10 @@ typedef struct s_point
 uint32_t		shift_color(uint32_t color);
 int				offsetx(t_ray ray, mlx_texture_t *texture);
 mlx_texture_t	*set_texture(t_ray ray, t_config *config);
-double			step(uint32_t texture_height, double wallstripheight);
-void			draw_up(t_config *config, double wallstripheight, int j, \
+float			step(uint32_t texture_height, float wallstripheight);
+void			draw_up(t_config *config, float wallstripheight, int j, \
 					t_ray ray);
-void			draw_down(t_config *config, double wallstripheight, int j, \
+void			draw_down(t_config *config, float wallstripheight, int j, \
 					t_ray ray);
 mlx_texture_t	*set_texture(t_ray ray, t_config *config);
 void			initialize(t_config *config, t_map **map, mlx_t *mlx, \
@@ -158,28 +162,28 @@ void			setup_map(t_config *config);
 void			setup_player(t_config *config);
 void			setup_fov(t_config *config);
 void			setup_wall(t_config *config);
-void			cast_ray(t_config *config, int stripId, double rayangle);
+void			cast_ray(t_config *config, int stripId, float rayangle);
 void			cast_all_rays(t_config *config);
-void			wall3d(t_config *config, double wallstripheight, \
+void			wall3d(t_config *config, float wallstripheight, \
 					int j, t_ray ray);
 void			ceil2dfloor1d(t_config *config, int i);
-void			whileforvert(t_config *config, t_ray *ray, double nvtx, \
-					double nvty);
+void			whileforvert(t_config *config, t_ray *ray, float nvtx, \
+					float nvty);
 void			cast_vertical_ray(t_config *config, t_ray *ray);
 void			whileforhorz(t_config *config, t_ray *ray, \
-					double nextHorzTouchX, double nextHorzTouchY);
+					float nextHorzTouchX, float nextHorzTouchY);
 void			cast_horizontal_ray(t_config *config, t_ray *ray);
 void			find_closest_wall_hit(t_config *config, t_ray *ray);
 int				key_pressed(t_config *config);
-int				is_wall(t_config *config, double x, double y);
+int				is_wall(t_config *config, float x, float y);
 void			update_player_pos(t_config *config);
 
 // tools :
-int				draw_line(t_config *config, double endX, double endY, \
+int				draw_line(t_config *config, float endX, float endY, \
 					uint32_t color);
-double			distance_between_points(double x1, double y1, double x2, \
-					double y2);
-double			normalize_angle(double angle);
+float			distance_between_points(float x1, float y1, float x2, \
+					float y2);
+float			normalize_angle(float angle);
 void			*ft_malloc(size_t size);
 
 void			ft_error(int x);
