@@ -3,60 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting5.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 12:41:05 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:46:48 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/28 02:36:31 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Cub3d.h"
 
-void	draw_up(t_config *config, double wallstripheight, int j, t_ray ray)
+void	draw_up(t_config *config, float wallstripheight, int j, t_ray ray)
 {
 	mlx_texture_t	*texture;
 	uint32_t		color;
 	int				i;
-	double			next_px;
+	float			next_px;
 	uint32_t		*pixels_tmp;
 
 	texture = set_texture(ray, config);
 	pixels_tmp = (uint32_t *)texture->pixels;
-	i = 0;
+	ray.step = step(texture->height, wallstripheight);
+	if (wallstripheight > HEIGHT)
+		wallstripheight = HEIGHT;
+	i = HEIGHT / 2;
 	next_px = 0;
-	while (i < wallstripheight / 2)
+	while (i > (HEIGHT / 2) - (wallstripheight / 2))
 	{
 		color = shift_color(pixels_tmp[texture->width * (texture->height / 2)
 				+ offsetx(ray, texture) - (texture->width * (int)next_px)]);
-		mlx_put_pixel(config->img, j, (HEIGHT / 2) - i, color);
-		next_px += step(texture->height, wallstripheight);
-		i++;
+		mlx_put_pixel(config->img, j, i, color);
+		next_px += ray.step;
+		i--;
 	}
 }
 
-void	draw_down(t_config *config, double wallstripheight, int j, t_ray ray)
+void	draw_down(t_config *config, float wallstripheight, int j, t_ray ray)
 {
 	mlx_texture_t	*texture;
 	uint32_t		color;
 	int				i;
-	double			next_px;
+	float			next_px;
 	uint32_t		*pixels_tmp;
 
 	texture = set_texture(ray, config);
 	pixels_tmp = (uint32_t *)texture->pixels;
-	i = 0;
+	ray.step = step(texture->height, wallstripheight);
+	if (wallstripheight > HEIGHT)
+		wallstripheight = HEIGHT;
+	i = HEIGHT / 2;
 	next_px = 0;
-	while (i < wallstripheight / 2)
+	while (i < (HEIGHT / 2) + (wallstripheight / 2))
 	{
+		if (texture->width * texture->height < texture->width
+			* (texture->height / 2)
+			+ offsetx(ray, texture) + (texture->width * (int)next_px))
+			return (mlx_put_pixel(config->img, j, i, 0x7FFFFFFF));
 		color = shift_color(pixels_tmp[texture->width *(texture->height / 2)
 				+ offsetx(ray, texture) + (texture->width * (int)next_px)]);
-		mlx_put_pixel(config->img, j, (HEIGHT / 2) + i, color);
-		next_px += step(texture->height, wallstripheight);
+		mlx_put_pixel(config->img, j, i, color);
+		next_px += ray.step;
 		i++;
 	}
 }
 
-void	wall3d(t_config *config, double wallstripheight, int j, t_ray ray)
+void	wall3d(t_config *config, float wallstripheight, int j, t_ray ray)
 {
 	draw_up(config, wallstripheight, j, ray);
 	draw_down(config, wallstripheight, j, ray);
@@ -79,7 +89,7 @@ void	ceil2dfloor1d(t_config *config, int i)
 
 void	setup_wall(t_config *config)
 {
-	double	ray_distance;
+	float	ray_distance;
 	int		i;
 
 	i = 0;
@@ -88,11 +98,10 @@ void	setup_wall(t_config *config)
 		ray_distance = config->rays[i].distance * \
 			cos(config->rays[i].rayangle - config->player.rotation_angle);
 		config->rays[i].wallstripheight = \
-			(config->map->ratioy / ray_distance) * config->player.dpp;
-		if (config->rays[i].wallstripheight > HEIGHT)
-			config->rays[i].wallstripheight = HEIGHT;
+			(TILE_SIZE / ray_distance) * config->player.dpp;
 		ceil2dfloor1d(config, i);
 		wall3d(config, config->rays[i].wallstripheight, i, config->rays[i]);
 		i++;
 	}
+	mlx_image_to_window(config->mlx, config->img, 0, 0);
 }

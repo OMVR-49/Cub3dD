@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:36 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 07:06:39 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:55:06 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_map	*initialize_map(t_start *head, t_start *map, int *rgb)
 	return (mapp);
 }
 
-t_map	*parsing(int ac, char **av)
+t_map	*parsing(char **av)
 {
 	t_type	h;
 

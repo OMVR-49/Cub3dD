@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_help4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 22:05:45 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 07:08:37 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:35:01 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*create_newmap_row(char **map, int max_size_line, int row_index)
 	k = 0;
 	while (k < max_size_line + 2)
 	{
-		if (k == 0 || k > ft_strlen(map[row_index - 1]))
+		if (k == 0 || (size_t)k > ft_strlen(map[row_index - 1]))
 			newmap_row[k] = ' ';
 		else
 			newmap_row[k] = map[row_index - 1][k - 1];
@@ -90,7 +90,7 @@ int	calculate_rgb(char **tmprgb)
 {
 	int	rgb;
 
-	rgb = ft_atoi(tmprgb[0]) * 65536
-		+ ft_atoi(tmprgb[1]) * 256 + ft_atoi(tmprgb[2]);
+	rgb = ft_atoi(tmprgb[0]) << 24 | ft_atoi(tmprgb[1]) << 16 | \
+	ft_atoi(tmprgb[2]) << 8 | 255;
 	return (rgb);
 }

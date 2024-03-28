@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   delete_txt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/26 00:46:04 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 23:28:43 by sacharai         ###   ########.fr       */
+/*   Created: 2024/03/27 22:08:45 by sacharai          #+#    #+#             */
+/*   Updated: 2024/03/27 22:24:20 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Cub3d.h"
+#include "Cub3d.h"
 
-int	ft_atoi(const char *str)
+void	delete_txt(t_config test, mlx_t *mlx)
 {
-	int	i;
-	int	s;
-	int	r;
-
-	s = 1;
-	i = 0;
-	r = 0;
-	while (str[i] && (str[i] == 32 || (str[i] >= 9 && str[i] <= 13)))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			s *= -1;
-		i++;
-	}
-	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
-	{
-		r = r * 10 + str[i] - '0';
-		i++;
-	}
-	return (r * s);
+	mlx_delete_texture(test.texture_no);
+	mlx_delete_texture(test.texture_so);
+	mlx_delete_texture(test.texture_we);
+	mlx_delete_texture(test.texture_ea);
+	mlx_terminate(mlx);
 }

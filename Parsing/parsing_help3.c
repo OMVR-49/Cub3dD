@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:40:13 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 07:08:13 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:50:45 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ t_ply	*check_map_valid_char(char **map)
 
 int	calculate_max_size_line(char **map)
 {
-	int	max_size_line;
-	int	i;
+	size_t	max_size_line;
+	int		i;
 
 	i = 0;
 	max_size_line = 0;
@@ -80,8 +80,8 @@ int	calculate_max_size_line(char **map)
 char	**create_helpmap(char **map, int max_size_line, int num_rows)
 {
 	char	**helpmap;
-	int		j;
 	int		k;
+	int		j;
 
 	j = 0;
 	helpmap = ft_malloc(sizeof(char *) * (num_rows + 1));
@@ -91,7 +91,7 @@ char	**create_helpmap(char **map, int max_size_line, int num_rows)
 		helpmap[j] = ft_malloc(sizeof(char) * (max_size_line + 1));
 		while (k < max_size_line)
 		{
-			if (k >= ft_strlen(map[j]))
+			if ((size_t)k >= ft_strlen(map[j]))
 				helpmap[j][k] = ' ';
 			else
 				helpmap[j][k] = map[j][k];

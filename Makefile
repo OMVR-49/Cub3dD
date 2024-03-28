@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+         #
+#    By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 22:04:37 by ojebbari          #+#    #+#              #
-#    Updated: 2024/03/27 13:36:11 by ojebbari         ###   ########.fr        #
+#    Updated: 2024/03/28 03:02:19 by sacharai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,10 @@ SRC =	main.c  Raycasting/raycasting1.c Raycasting/raycasting2.c \
 				Parsing/parsing_help4.c \
 				Parsing/insert_node.c \
 				tools1.c \
+				ft_grbg.c \
+				delete_txt.c 
 
-CFLAGS = -O3 #-Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -O3
 CC = cc
 NAME = cub3D
 RM = rm -fr
@@ -33,11 +35,11 @@ MLX_FLG = MLX42/build/libmlx42.a
 
 all : $(NAME)
 
-%.o : %.c Cub3d.h
-	@$(CC) $(CFLAGS) -c $< -o $@
+%.o : %.c Cub3d.h ./get_next_line/get_next_line.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME) : $(OBJ) Cub3d.h
-	@$(CC)  $(OBJ) $(CFLAGS) $(MLX) $(MLX_FLG) -o $@
+$(NAME) : $(OBJ) Cub3d.h ./get_next_line/get_next_line.h
+	$(CC)  $(OBJ) $(CFLAGS) $(MLX) $(MLX_FLG) -o $@
 
 clean :
 	@$(RM) $(OBJ)

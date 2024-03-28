@@ -6,7 +6,7 @@
 /*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 12:33:12 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:34:50 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/28 09:50:14 by ojebbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "get_next_line/get_next_line.h"
 
 # define PI 3.141592653589793238
-# define TILE_SIZE  32
+# define TILE_SIZE  128
 # define HEIGHT  500
 # define WIDTH  500
 # define WALL_WIDTH 1
@@ -40,16 +40,16 @@ typedef struct s_ply
 
 typedef struct s_player
 {
-	double	strafe_direction;
-	double	turn_direction; // -1 if left , +1 if right , 0 nothing
-	double	walk_direction; // -1 if back , +1 if front , 0 nothing
-	double	rotation_angle; //
-	double	movement_speed; //
-	double	rotation_speed; //
-	double	fov_angle;
-	double	dpp;
-	double	x; // x place of my player
-	double	y; // y place of my player
+	float	strafe_direction;
+	float	turn_direction;
+	float	walk_direction;
+	float	rotation_angle;
+	float	movement_speed;
+	float	rotation_speed;
+	float	fov_angle;
+	float	dpp;
+	float	x;
+	float	y;
 }				t_player;
 
 typedef struct s_start
@@ -65,14 +65,12 @@ typedef struct s_map
 {
 	unsigned char	player_rotation_start; // 'N', 'S', 'E', 'W'
 	char			**grid;
-	uint32_t		f; // alloc 4 bytes for each color
-	uint32_t		c; // alloc 4 bytes for each color
-	int				num_cols; // number of columns
-	int				num_rows; // number of rows
+	uint32_t		f;
+	uint32_t		c;
+	int				num_cols;
+	int				num_rows;
 	int				player_x;
 	int				player_y;
-	int				ratiox; // dyali ana omar
-	int				ratioy; //dyali ana omar
 	long			map_width;
 	long			map_height;
 	t_start			*head;
@@ -86,41 +84,48 @@ typedef struct s_ray
 {
 	int		foundhithorizontal;
 	int		foundhitvertical;
-	double	wallhitxh;
-	double	wallhityh;
-	double	wallhitxv;
-	double	wallhityv;
+	float	wallhitxh;
+	float	wallhityh;
+	float	wallhitxv;
+	float	wallhityv;
 
-	double	rayangle;
-	double	distance;
+	float	rayangle;
+	float	distance;
 
-	double	wallhitx;
-	double	wallhity;
-	double	xinch;
-	double	yinch;
-	double	xincv;
-	double	yincv;
+	float	wallhitx;
+	float	wallhity;
+	float	xinch;
+	float	yinch;
+	float	xincv;
+	float	yincv;
 
 	bool	wasvertical;
 
-	double	israyfdown;
-	double	israyfup;
-	double	israyfright;
-	double	israyfleft;
+	float	israyfdown;
+	float	israyfup;
+	float	israyfright;
+	float	israyfleft;
 
-	double	wallstripheight;
+	float	wallstripheight;
 
-	double	h_distance;
-	double	v_distance;
+	float	h_distance;
+	float	v_distance;
+
+	float	step;
+
 }			t_ray;
 
 typedef struct s_config
 {
-	t_ray		rays[NUM_RAYS];
-	mlx_image_t	*img;
-	t_player	player;
-	mlx_t		*mlx;
-	t_map		*map;
+	mlx_texture_t	*texture_no;
+	mlx_texture_t	*texture_so;
+	mlx_texture_t	*texture_we;
+	mlx_texture_t	*texture_ea;
+	t_ray			rays[NUM_RAYS];
+	mlx_image_t		*img;
+	t_player		player;
+	mlx_t			*mlx;
+	t_map			*map;
 }				t_config;
 
 typedef struct s_type
@@ -140,54 +145,61 @@ typedef struct s_point
 	int	j;
 }	t_point;
 
+typedef struct s_collector
+{
+	void				*ptr;
+	struct s_collector	*next;
+}			t_collector;
+
 // rayCasting:
-uint32_t	shift_color(uint32_t color);
-int	offsetx(t_ray ray, mlx_texture_t *texture);
+uint32_t		shift_color(uint32_t color);
+int				offsetx(t_ray ray, mlx_texture_t *texture);
 mlx_texture_t	*set_texture(t_ray ray, t_config *config);
-double	step(uint32_t texture_height, double wallstripheight);
-void	draw_up(t_config *config, double wallstripheight, int j, \
-t_ray ray);
-void	draw_down(t_config *config, double wallstripheight, int j, \
-t_ray ray);
+float			step(uint32_t texture_height, float wallstripheight);
+void			draw_up(t_config *config, float wallstripheight, int j, \
+					t_ray ray);
+void			draw_down(t_config *config, float wallstripheight, int j, \
+					t_ray ray);
 mlx_texture_t	*set_texture(t_ray ray, t_config *config);
 void			initialize(t_config *config, t_map **map, mlx_t *mlx, \
-mlx_image_t *img);
+					mlx_image_t *img);
 void			update(t_config *config);
 void			hook(void *param);
 void			grid(t_config *config, int tileX, \
-int tileY, uint32_t tileColor);
+					int tileY, uint32_t tileColor);
 void			setup_map(t_config *config);
 void			setup_player(t_config *config);
 void			setup_fov(t_config *config);
 void			setup_wall(t_config *config);
-void			cast_ray(t_config *config, int stripId, double rayangle);
+void			cast_ray(t_config *config, int stripId, float rayangle);
 void			cast_all_rays(t_config *config);
-void			wall3d(t_config *config, double wallstripheight, \
-int j, t_ray ray);
+void			wall3d(t_config *config, float wallstripheight, \
+					int j, t_ray ray);
 void			ceil2dfloor1d(t_config *config, int i);
-void			whileforvert(t_config *config, t_ray *ray, double nvtx, \
-double nvty);
+void			whileforvert(t_config *config, t_ray *ray, float nvtx, \
+					float nvty);
 void			cast_vertical_ray(t_config *config, t_ray *ray);
 void			whileforhorz(t_config *config, t_ray *ray, \
-double nextHorzTouchX, double nextHorzTouchY);
+					float nextHorzTouchX, float nextHorzTouchY);
 void			cast_horizontal_ray(t_config *config, t_ray *ray);
 void			find_closest_wall_hit(t_config *config, t_ray *ray);
 int				key_pressed(t_config *config);
-int				is_wall(t_config *config, double x, double y);
+int				is_wall(t_config *config, float x, float y);
 void			update_player_pos(t_config *config);
 
 // tools :
-int				draw_line(t_config *config, double endX, double endY, \
-uint32_t color);
-double			distance_between_points(double x1, \
-double y1, double x2, double y2);
-double			normalize_angle(double angle);
+int				draw_line(t_config *config, float endX, float endY, \
+					uint32_t color);
+float			distance_between_points(float x1, float y1, float x2, \
+					float y2);
+float			normalize_angle(float angle);
 void			*ft_malloc(size_t size);
 
 void			ft_error(int x);
 // void	Parsing();
-void			raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
-t_map			*parsing(int ac, char **av);
+t_config		raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
+// void			raycasting(t_map *map, mlx_t *mlx, mlx_image_t *img);
+t_map			*parsing(char **av);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*get_next_line(int fd);
 char			**ft_split(char const *s, char c);
@@ -218,5 +230,12 @@ int				count_table(char **str);
 void			ft_message(char *message, int x);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
+void			delete_txt(t_config test, mlx_t *mlx);
+//collector ()
+
+t_collector		**ft_collector(void);
+void			ft_lstadd_back_clctr(t_collector **lst, t_collector *new);
+void			ft_free_collector(t_collector **lst);
+t_collector		*ft_lstnew_clctr(void *lst);
 
 #endif

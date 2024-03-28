@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 01:09:34 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/26 10:44:52 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:15:41 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cub3d.h"
 
-int	draw_line(t_config *config, double endX, double endY, uint32_t color)
+int	draw_line(t_config *config, float endX, float endY, uint32_t color)
 {
-	double	deltax;
-	double	deltay;
-	double	pixelx;
-	double	pixely;
-	double	pixels;
+	float	deltax;
+	float	deltay;
+	float	pixelx;
+	float	pixely;
+	float	pixels;
 
 	deltax = endX - config->player.x;
 	deltay = endY - config->player.y;
@@ -48,15 +48,16 @@ void	*ft_malloc(size_t size)
 		perror("malloc fails\n");
 		exit(1);
 	}
+	ft_lstadd_back_clctr(ft_collector(), ft_lstnew_clctr(ptr));
 	return (ptr);
 }
 
-double	distance_between_points(double x, double y, double a, double b)
+float	distance_between_points(float x, float y, float a, float b)
 {
 	return (sqrt((a - x) * (a - x) + (b - y) * (b - y)));
 }
 
-double	normalize_angle(double angle)
+float	normalize_angle(float angle)
 {
 	angle = fmod(angle, 2 * M_PI);
 	if (angle < 0)

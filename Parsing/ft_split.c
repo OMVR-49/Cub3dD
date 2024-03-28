@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 01:28:08 by sacharai          #+#    #+#             */
-/*   Updated: 2024/03/27 07:06:58 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:43:43 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	word = ft_count_word(s, c);
-	strs = (char **)malloc((word + 1) * sizeof(char *));
+	strs = (char **)ft_malloc((word + 1) * sizeof(char *));
 	if (!(strs))
 		return (NULL);
 	j = -1;

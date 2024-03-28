@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ojebbari <ojebbari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 13:39:27 by ojebbari          #+#    #+#             */
-/*   Updated: 2024/03/27 13:32:27 by ojebbari         ###   ########.fr       */
+/*   Updated: 2024/03/28 00:14:14 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	ft_error(int x)
 		ft_message("no player", 9);
 	else if (x == 10)
 		ft_message("invalid map", 10);
-	else if (x == 11)
-		ft_message("no map", 11);
+	else if (x == 14)
+		ft_message("no map", 14);
 	else if (x == 15)
 		ft_message("empty line in the middle of the map", 15);
 }
@@ -77,6 +77,15 @@ void	fill_headers(t_map *map)
 			map->ea = tmp->value;
 		tmp = tmp->next;
 	}
+	check_images(map);
+}
+
+void	init_text(t_config *test)
+{
+	test->texture_no = NULL;
+	test->texture_so = NULL;
+	test->texture_we = NULL;
+	test->texture_ea = NULL;
 }
 
 int	main(int ac, char **av)
@@ -84,25 +93,26 @@ int	main(int ac, char **av)
 	mlx_image_t	*img;
 	t_map		*map;
 	mlx_t		*mlx;
+	t_config	test;
 
 	map = NULL;
 	mlx = NULL;
-	if (WIDTH < 200 || HEIGHT < 200 || WIDTH > 600 || HEIGHT > 600)
+	init_text(&test);
+	if (WIDTH < 200 || HEIGHT < 200 || WIDTH > 800 || HEIGHT > 800)
 		return (0);
 	if (ac == 2)
 	{
-		map = parsing(ac, av);
+		map = parsing(av);
 		fill_headers(map);
-		check_images(map);
 		if (map)
 		{
-			mlx_set_setting(0, false);
-			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", false);
+			mlx_set_setting(0, true);
+			mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
 			img = mlx_new_image(mlx, WIDTH, HEIGHT);
-			raycasting(map, mlx, img);
+			test = raycasting(map, mlx, img);
 		}
 	}
 	else
 		ft_error(1);
-	mlx_terminate(mlx);
+	return (delete_txt(test, mlx), 0);
 }
